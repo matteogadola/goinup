@@ -44,17 +44,6 @@ const sponsors = [
   },
 ]
 
-/*import alpiniAlbaredo from 'public/images/credits/alpini-albaredo.webp'
-import sportRaceValtellina from 'public/images/credits/sport-race-valtellina.webp'
-import prolocoGerola from 'public/images/credits/proloco-gerola.png'
-import prolocoBema from 'public/images/credits/proloco-bema.jpg'
-import insiemePerSacco from 'public/images/credits/insieme-per-sacco.webp'
-import k2v from 'public/images/credits/k2v.png'
-import tiroAllaFuneValtellina from 'public/images/credits/tiro-alla-fune-valtellina.webp'
-import voceDiDaniele from 'public/images/credits/voce-di-daniele.png'
-import mobiliRumi from 'public/images/credits/mobili-rumi.webp'
-import caurga from 'public/images/credits/caurga.png'*/
-
 const supporters = [
   {
     name: 'Consorzio Traona',
@@ -65,92 +54,85 @@ const supporters = [
     logo: '/images/credits/team-valtellina.webp',
     height: 80,
     url: 'https://teamvaltellina.com'
-  }, /*{
+  }, {
     name: 'Sport Race Valtellina',
-    logo: sportRaceValtellina,
+    logo: '/images/credits/team-valtellina.webp',
     height: 90,
     url: 'https://www.facebook.com/SportRaceValtellina/',
   }, {
     name: 'Pro Loco Gerola',
-    logo: prolocoGerola,
+    logo: '/images/credits/team-valtellina.webp',
     height: 80,
     url: 'https://www.facebook.com/ProLocoGerola'
   }, {
     name: 'Pro Loco Bema',
-    logo: prolocoBema,
+    logo: '/images/credits/team-valtellina.webp',
     height: 80,
     url: 'https://www.prolocobema.it'
   }, {
     name: 'Insieme per Sacco',
-    logo: insiemePerSacco,
+    logo: '/images/credits/team-valtellina.webp',
     height: 90,
     url: 'https://www.insiemepersacco.it'
   }, {
     name: 'K2 Valtellina',
-    logo: k2v,
+    logo: '/images/credits/team-valtellina.webp',
     height: 90,
     url: 'https://www.k2valtellina.it/'
   }, {
     name: 'Tiro alla Fune Valtellina',
-    logo: tiroAllaFuneValtellina,
+    logo: '/images/credits/team-valtellina.webp',
     height: 100,
     url: 'https://www.facebook.com/tiroallafuneValtellina'
   }, {
     name: 'La voce di Daniele',
-    logo: voceDiDaniele,
+    logo: '/images/credits/team-valtellina.webp',
     height: 70,
   }, {
     name: 'Mobili Rumi',
-    logo: mobiliRumi,
+    logo: '/images/credits/team-valtellina.webp',
     height: 80,
     url: 'https://www.mobilirumi.it'
   }, {
     name: 'Caurga',
-    logo: caurga,
+    logo: '/images/credits/team-valtellina.webp',
     height: 80,
     url: 'https://www.facebook.com/prolocoforcola'
-  },*/
+  },
 ]
 
-/*import sportDiMontagna from 'public/images/credits/sportdimontagna.webp'
-import fotorunValtellina from 'public/images/credits/fotorun-valtellina.png'
-import speedtime from 'public/images/credits/speedtime.png'
-import radioTsn from 'public/images/credits/radio-tsn.webp'
-import centroValle from 'public/images/credits/centro-valle-netweek.webp'
-import laProvinciadiSondrio from 'public/images/credits/la-provincia-unica.webp'
-*/
 const partners = [
-  /*{
+  {
     name: 'Sport di Montagna',
-    logo: sportDiMontagna,
+    logo: '/images/credits/team-valtellina.webp',
     height: 80,
     url: 'https://www.sportdimontagna.com',
   }, {
     name: 'Fotorun Valtellina',
-    logo: fotorunValtellina,
+    logo: '/images/credits/team-valtellina.webp',
     height: 100,
     url: 'https://www.facebook.com/FOTORUN.valtellina'
   }, {
     name: 'Radio Tsn',
-    logo: radioTsn,
+    logo: '/images/credits/team-valtellina.webp',
     height: 60,
     url: 'https://radiotsn.tv/'
   }, {
     name: 'Speed Time Production',
-    logo: speedtime,
+    logo: '/images/credits/team-valtellina.webp',
     height: 70,
     url: 'https://www.facebook.com/speedtimeproduction'
   }, {
     name: 'Centrovalle',
-    logo: centroValle,
+    logo: '/images/credits/team-valtellina.webp',
     height: 70,
     url: 'https://netweek.it/testate/giornale-di-sondrio-centro-valle/',
   }, {
     name: 'La Provincia di Sondrio',
-    logo: laProvinciadiSondrio,
+    logo: '/images/credits/team-valtellina.webp',
     height: 50,
     url: 'https://www.laprovinciadisondrio.it'
-  },*/
+  },
 ]
 
 export default function Credits() {
