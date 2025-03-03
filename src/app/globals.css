@@ -1,0 +1,28 @@
+/*@tailwind base;
+//@tailwind components;
+@tailwind utilities;*/
+@import "tailwindcss";
+
+@theme {
+  --font-unbounded: var(--font-unbounded);
+  --font-poppins: var(--font-poppins)
+}
+
+:root {
+  --background: white;/* #FFFEEE;*/
+  --foreground: #171717;
+  /* cedfd9  prova a vedere come si sposa per titoli ecc*/
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+}

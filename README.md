@@ -1,65 +1,69 @@
-# Qwik City App ⚡️
+Questo progetto nasce come portfolio e per sperimentare blablabla
 
-- [Qwik Docs](https://qwik.dev/)
-- [Discord](https://qwik.dev/chat)
-- [Qwik GitHub](https://github.com/QwikDev/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+## Premessa
 
----
+Quando un'associazione no-profit mi ha chiesto una mano per la creazione di un sito avevo davanti e me due scelte.
+Installare wordpress, acquistare un tema, acquistare qualche plugin, configurarli e ciaoegrazie. Oppure sfruttare l'occasione per scoprire e studiare qualcosa di nuovo. Così ho scelto di realizzarlo da zero con next.js. Non solo framework mai utilizzato prima ma anche mio primo progetto react.
 
-## Project Structure
+In ambito lavorativo, per il frontend, utilizzo perlopiù Angular.
 
-This project is using Qwik with [QwikCity](https://qwik.dev/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
+### Pro-bono
 
-Inside your project, you'll see the following directory structure:
+Essendo un progetto probono ogni singola scelta è finalizzata al mantenimento di un'infrastruttura -quanto più- gratuita.
 
-```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
-```
+Ogni singolo euro risparmiato è un aiuto in più. Per questo l'infrastruttura e singoli servizi sono stati scelti per ...
 
-- `src/routes`: Provides the directory-based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.dev/qwikcity/routing/overview/) for more info.
+Per questo alcuni dati, al posto che essere su db, vengono salvati in json locale.
 
-- `src/components`: Recommended directory for components.
+[script](https://github.com/matteogadola/fidal-json)
 
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
+## Tecnologie (lato sviluppo)
 
-## Add Integrations and deployment
+Le tecnologie utilizzate sono nextjs 15, tailwind,
+that's it??? 
 
-Use the `npm run qwik add` command to add additional integrations. Some examples of integrations includes: Cloudflare, Netlify or Express Server, and the [Static Site Generator (SSG)](https://qwik.dev/qwikcity/guides/static-site-generation/).
+## Infrastruttura
 
-```shell
-npm run qwik add # or `yarn qwik add`
-```
+Ogni componente di questo sito si basa sul piano gratuito di ogni servizio.
+Non è tutto merito della fortuna ma di uno studio e analisi dei free-tier che rispecchiassero l'utilizzo
+I servizi sono stati scelti con cura SaaS
+Il tutto si basa su free-tier dei seguenti servizi
 
-## Development
+### Vercel
 
-Development mode uses [Vite's development server](https://vitejs.dev/). The `dev` command will server-side render (SSR) the output during development.
+Per la parte hosting è stato utilizzato per due anni [Netify](https://www.netlify.com) ma con l'avvento di Next.js 15 siamo passati a [Vercel](https://vercel.com).
+La scelta in questo caso è stata molto semplice in quanto il free-tier di entrambi i servizi è piuttosto generoso e nel caso venga ridotto sensibilmente si può tornare all'hosting di base fornito dal registrar del dominio. Certo si perderebbero innumerevoli comodità lato development experience ma poco nulla lato user experience.
 
-```shell
-npm start # or `yarn start`
-```
+### Supabase
 
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
+La scelta in questo caso è stata meno scontata.
+Per database, backend e autenticazione
 
-## Preview
+#### Alternative
 
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.
+Firebase, blablabla...
 
-```shell
-npm run preview # or `yarn preview`
-```
+### Sanity
 
-## Production
+L'obiettivo era quello di permettere una gestione di base delle gare e una minima personalizzazione grafica e dei testi.
+Esistono ottimi cms. Perlopiù self-hosted. La prima scelta sarebbe stata [Storyblok](https://www.storyblok.com) se non fosse che il piano gratuito prevede un solo utente.
+La scelta è quindi ricaduta su [Sanity](https://www.sanity.io).
+Sono state implementate alcune personalizzazioni nella parte studio tra cui una poco elegante [funzione](sanity-studio/lib/auth.ts) per permettere una basica gestione dei ruoli (non disponibile nella versione gratuita). 
 
-The production build will generate client and server modules by running both client and server build commands. The build command will use Typescript to run a type check on the source code.
+### Brevo
 
-```shell
-npm run build # or `yarn build`
-```
+Per l'invio di mail transazionali (es. conferma d'ordine) sono stati provati diversi servizi per poi ricadere in quello con il free-tier più generoso (300 mail al giorno)
+soluzione SaaS
+Uno dei free-tier più generosi (300 mail transazionali al giorno)
+[Brevo](https://www.brevo.com)
+Ad oggi non sono previste mail di marketing.
+
+### Stripe
+
+Gestione pagamenti. scelto per la facilità di gestione e per il costo più contenuto
+altre soluzioni...
+purtroppo piano no-profit solo per donazioni pure non er vendita di prodotti/servizi a scopo benefico.
+
+### Cookiebot / Iubenda
+
+
