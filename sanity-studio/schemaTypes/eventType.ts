@@ -114,14 +114,25 @@ export const eventType = defineType({
       description: 'Data di chiusura delle iscrizioni',
       //initialValue: ({ document }) => new Date(document?.date ?? '2024-01-01 21:00:00').toISOString(),
     }),
-    /*defineField({
+    defineField({
       name: 'products',
       type: 'array',
-      of: [{type: 'object',fields: []}],
-      title: 'Capacità',
-      description: 'Numero massimo di partecipanti',
-      hidden: ({document}) => document
-    }),*/
+      title: 'Prodotti',
+      of: [{
+        type: 'reference',
+        to: [{type: 'product'}],
+        options: {
+          disableNew: true,
+        }
+      }],
+    }),
+    defineField({
+      name: 'description',
+      type: 'array',
+      of: [{type: 'block'}],
+      title: 'Descrizione',
+      description: 'Descrizione dettagliata che comparirà nella pagina dedicata all\'evento',
+    }),
     defineField({
       name: 'payment_methods',
       type: 'array',
@@ -186,5 +197,14 @@ export const eventType = defineType({
         media: media
       }
     }
-  }
+  },
+  orderings: [
+    {
+      title: 'Date',
+      name: 'date',
+      by: [
+        {field: 'date', direction: 'asc'}
+      ]
+    },
+  ],
 })
