@@ -22,8 +22,8 @@ export default function CheckoutPage() {
           <div className="flex h-full flex-col">
             <div className="flex-1 overflow-y-auto px-4">
               <div className="">
-                <h2 className="overtitle" id="slide-over-title">Conferma</h2>
-                <h2 className="title">Carrello</h2>
+                <h2 className="overtitle" id="slide-over-title">Carrello</h2>
+                <h2 className="title">Conferma l'ordine</h2>
               </div>
 
               <div className="">
