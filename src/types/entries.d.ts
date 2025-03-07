@@ -3,27 +3,32 @@ export interface Entry {
   order_item_id: number;
   item_id: number;
   event_id: string;
+
   first_name: string;
   last_name: string;
   tin: string;
-  email: string;
-  phone_number: string;
-  team: string | null;
-  fidal_card: string | null;
+  gender: '' | 'M' | 'F';
+  birth_date: string,
+  birth_place: string,
+
+  fidal_card: string;
   country: string;
-  birth_place: string | null;
-  birth_date: string;
-  birth_year?: number;
-  gender: 'M' | 'F';
   bib_number: smallint;
+  
+  club: string,
+  email: string,
+  phone_number: string,
 }
 
-export type PartialEntry = Pick<
+export type EntryForm = Pick<
   Entry,
-  | 'event_id'
   | 'first_name'
   | 'last_name'
-  | 'birth_year'
+  | 'tin'
   | 'gender'
-  | 'team'
+  | 'birth_date'
+  | 'birth_place'
+  | 'club'
+  | 'email'
+  | 'phone_number'
 >

@@ -1,8 +1,15 @@
-import { Store } from '@/types/store';
-import { create } from 'zustand';
+//import { Store } from '@/types/store';
+/*import { create } from 'zustand';
+import { createAuthSlice } from './auth'
+import { createCartSlice } from './cart'
 
-interface Stepper {}
+// https://zustand.docs.pmnd.rs/guides/typescript#slices-pattern
+export const useStore = create<any>((...a) => ({
+  ...createAuthSlice(...a),
+  ...createCartSlice(...a),
+}))*/
 
+/*
 export const useStore = create<Store>((set) => ({
   appError: null,
   //auth: { session: null },
@@ -19,3 +26,4 @@ export const useStore = create<Store>((set) => ({
   clearCartItems: () => set((state) => ({ ...state, cartItems: [] })),
   setPaymentMethod: (item) => set((state) => ({ ...state, paymentMethod: item })),
 }));
+*/
