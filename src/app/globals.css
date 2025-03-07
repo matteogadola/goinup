@@ -1,112 +1,43 @@
-@import "tailwindcss";
-/*@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css" layer(utilities);*/
-
-@import "@mantine/core/styles.css";
-@import "@mantine/dates/styles.css";
-
-/*
-https://github.com/orgs/mantinedev/discussions/1672#discussioncomment-7561382
-@layer theme, base, mantine, components, utilities;
-
-@import 'tailwindcss';
-
-@import '@mantine/core/styles.layer.css';
-*/
-
-
-@theme {
-  --font-unbounded: var(--font-unbounded);
-  --font-poppins: var(--font-poppins);
-
-  
-/* non so dove cazzo vanno messi */
---mantine-font-family: var(--font-poppins);
---mantine-heading-font-weight: 400;
---mantine-font-weight-thin: 400;
---mantine-font-weight-normal: 400;
---mantine-font-weight-bold: 400;
-}
-
-:root {
-  --background: white;/* #FFFEEE;*/
-  --foreground: #171717;
-  --link: #0040D6;
-  --link-hover: #3f8efc;
-  /* cedfd9  prova a vedere come si sposa per titoli ecc*/
-
-  
-  
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-
-    
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
-
+  @apply bg-background text-slate-800 font-poppins;
 }
 
-.link {
-  color: var(--link);
-  text-decoration: none;
-  /*transition: color 0.3s;*/
-
-  &:hover {
-    @media (hover: hover) {
-      opacity: 80%;
-    }
-  }
+.page {
+  @apply mt-4 mx-4 lg:mt-8 lg:mx-8;
 }
 
-
-
-
-
-
-
-
-.light {
-  font-weight: var(--font-weight-light)
+.display {
+  @apply font-unbounded font-bold text-gray-200;
+}
+.display h1 {
+  @apply text-5xl md:text-6xl lg:text-7xl;
+}
+.display h3 {
+  @apply text-2xl lg:text-3xl;
 }
 
-/*
+.overtitle {
+  @apply font-unbounded font-bold text-xl md:text-2xl text-accent uppercase
+}
+
+.title {
+  @apply font-unbounded font-bold text-4xl text-heading uppercase
+}
+
+.button {
+  @apply bg-button text-white rounded-lg px-4 py-2
+}
+
 form .label {
-  display: block;
-  text-transform: uppercase;
-  color: var(--color-gray-700);
-  font-size: var(--text-xs);
-  --tw-font-weight: var(--font-weight-bold);
-  font-weight: var(--font-weight-bold);
-  margin-bottom: calc(var(--spacing) * 2)
+  @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
 }
 
 form .field {
-  display: block;
-  width: 100%;
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--color-gray-200);
-  border-radius: 0.25rem;
-
-  padding-block: calc(var(--spacing) * 3);
-  padding-inline: calc(var(--spacing) * 4);
-  --tw-leading: var(--leading-tight);
-  line-height: var(--leading-tight);
-
-  &:focus {
-    --tw-outline-style: none;
-    outline-style: none;
-  }
+  @apply appearance-none bg-transparent block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-button;
 }
 
 form .field-helper {
@@ -125,4 +56,19 @@ form .field-helper > button,
 .link {
   @apply text-button hover:opacity-80
 }
-*/
+
+.p-inputtext, .p-autocomplete, .p-dropdown, .p-calendar {
+  width: 100%;
+}
+
+ul.separator li {
+  border-bottom: 1px solid #CCC;
+}
+
+ul.separator li:last-child {
+  border-bottom: 0;
+}
+
+.button-icon {
+  @apply bg-slate-200 shadow rounded-xl hover:opacity-70 hover:shadow-md;
+}

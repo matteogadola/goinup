@@ -1,28 +1,21 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import Navbar from '@components/navbar'
-import Footer from '@components/footer'
-import { fonts } from '@utils/fonts'
+import '@/app/globals.css'
+import { fonts } from '@/lib/fonts'
 
-export const metadata: Metadata = {
-  title: "Goinup Vertical",
-  description: "Circuito di gare vertical a scopo benefico",
-};
+export const dynamic = 'force-dynamic'
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="it">
-      <body className={`${fonts.map(font => font.variable).join(' ')} antialiased flex flex-col min-h-screen`}>
-        <Navbar />
-        <div className="px-4 py-8">
-          {children}
-        </div>
-        <Footer />
+    <html lang="it" className={`${fonts.map(font => font.variable).join(' ')}`}>
+      <head>
+        <link rel="icon" type="image/png" href="favicon.ico" />
+      </head>
+      <body className="flex flex-col min-h-screen">
+        {children}
       </body>
     </html>
-  );
+  )
 }
