@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-slate-800 font-poppins;
+}
+
+.page {
+  @apply mt-4 mx-4 lg:mt-8 lg:mx-8;
+}
+
+.display {
+  @apply font-unbounded font-bold text-gray-200;
+}
+.display h1 {
+  @apply text-5xl md:text-6xl lg:text-7xl;
+}
+.display h3 {
+  @apply text-2xl lg:text-3xl;
+}
+
+.overtitle {
+  @apply font-unbounded font-bold text-xl md:text-2xl text-accent uppercase
+}
+
+.title {
+  @apply font-unbounded font-bold text-4xl text-heading uppercase
+}
+
+.button {
+  @apply bg-button text-white rounded-lg px-4 py-2
+}
+
+form .label {
+  @apply block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2;
+}
+
+form .field {
+  @apply appearance-none bg-transparent block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:border-button;
+}
+
+form .field-helper {
+  @apply text-slate-600 text-xs
+}
+
+form .field-error {
+  @apply text-red-400 text-xs
+}
+
+form .invalid {
+  @apply border-red-400
+}
+
+form .field-helper > button,
+.link {
+  @apply text-button hover:opacity-80
+}
+
+.p-inputtext, .p-autocomplete, .p-dropdown, .p-calendar {
+  width: 100%;
+}
+
+ul.separator li {
+  border-bottom: 1px solid #CCC;
+}
+
+ul.separator li:last-child {
+  border-bottom: 0;
+}
+
+.button-icon {
+  @apply bg-slate-200 shadow rounded-xl hover:opacity-70 hover:shadow-md;
+}
