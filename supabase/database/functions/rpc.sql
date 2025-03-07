@@ -5,7 +5,7 @@ BEGIN
   FROM entries E
   INNER JOIN order_items OI ON E.order_item_id = OI.id
   WHERE (OI.payment_status = 'paid' OR (OI.payment_method = 'cash' AND OI.payment_status = 'pending'))
-  AND (tin = NEW.tin OR (E.first_name = NEW.first_name AND E.last_name = NEW.last_name));
+  AND (tin = _tin OR (E.first_name = _first_name AND E.last_name = _last_name AND extract(year from E.birth_date) = _birth_year));
   
   RETURN FOUND;
 END;
