@@ -5,6 +5,7 @@
 import Link from 'next/link';
 import AuthButton from './navbar-auth';
 import MobileButton from './navbar-mobile';
+import CartButton from './navbar-cart';
 
 //import { createClient } from '@/utils/supabase/server';
 //import NavbarLinks from './navbar-links';
@@ -44,6 +45,9 @@ export default async function Navbar() {
         </ul>
       </nav>
       <div className="flex items-center justify-end">
+        <div className="hidden md:flex">
+          <CartButton />
+        </div>
         <div className="hidden md:flex">
           <AuthButton />
         </div>

@@ -1,23 +1,51 @@
-/*@tailwind base;
-//@tailwind components;
-@tailwind utilities;*/
 @import "tailwindcss";
+/*@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css" layer(utilities);*/
+
+@import "@mantine/core/styles.css";
+@import "@mantine/dates/styles.css";
+
+/*
+https://github.com/orgs/mantinedev/discussions/1672#discussioncomment-7561382
+@layer theme, base, mantine, components, utilities;
+
+@import 'tailwindcss';
+
+@import '@mantine/core/styles.layer.css';
+*/
+
 
 @theme {
   --font-unbounded: var(--font-unbounded);
-  --font-poppins: var(--font-poppins)
+  --font-poppins: var(--font-poppins);
+
+  
+/* non so dove cazzo vanno messi */
+--mantine-font-family: var(--font-poppins);
+--mantine-heading-font-weight: 400;
+--mantine-font-weight-thin: 400;
+--mantine-font-weight-normal: 400;
+--mantine-font-weight-bold: 400;
 }
 
 :root {
   --background: white;/* #FFFEEE;*/
   --foreground: #171717;
+  --link: #0040D6;
+  --link-hover: #3f8efc;
   /* cedfd9  prova a vedere come si sposa per titoli ecc*/
+
+  
+  
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    
   }
 }
 
@@ -25,4 +53,76 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+
 }
+
+.link {
+  color: var(--link);
+  text-decoration: none;
+  /*transition: color 0.3s;*/
+
+  &:hover {
+    @media (hover: hover) {
+      opacity: 80%;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+.light {
+  font-weight: var(--font-weight-light)
+}
+
+/*
+form .label {
+  display: block;
+  text-transform: uppercase;
+  color: var(--color-gray-700);
+  font-size: var(--text-xs);
+  --tw-font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: calc(var(--spacing) * 2)
+}
+
+form .field {
+  display: block;
+  width: 100%;
+  border-style: var(--tw-border-style);
+  border-width: 1px;
+  border-color: var(--color-gray-200);
+  border-radius: 0.25rem;
+
+  padding-block: calc(var(--spacing) * 3);
+  padding-inline: calc(var(--spacing) * 4);
+  --tw-leading: var(--leading-tight);
+  line-height: var(--leading-tight);
+
+  &:focus {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+}
+
+form .field-helper {
+  @apply text-slate-600 text-xs
+}
+
+form .field-error {
+  @apply text-red-400 text-xs
+}
+
+form .invalid {
+  @apply border-red-400
+}
+
+form .field-helper > button,
+.link {
+  @apply text-button hover:opacity-80
+}
+*/

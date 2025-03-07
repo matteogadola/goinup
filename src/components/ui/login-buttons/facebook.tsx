@@ -13,17 +13,25 @@
 
 import { useMemo } from 'react'
 import { useFormStatus } from 'react-dom'
-import { loginWithFacebook } from '../actions'
+import { useAuthStore } from '@store/auth'
 
-export default function FacebookButton() {
-  const { pending, action } = useFormStatus()
-  const isLoading = useMemo(() => pending && (action as any)?.name === 'loginWithFacebook', [pending, action])
-  //const [state, formAction] = useFormState(signUp, { error: '' })
+export default function FacebookLoginButton() {
+  const { isLoading, loadingProvider, setLoading } = useAuthStore()
+
+  const handleClick = async () => {
+    setLoading('facebook')
+
+    try {
+      await loginWithFacebook()
+    } finally {
+      setLoading()
+    }
+  }
 
   return (
-    <button formAction={loginWithFacebook} className="flex items-center h-12 bg-white shadow-xs hover:shadow-sm hover:bg-slate-100 hover:cursor-pointer text-black px-4 rounded" disabled={pending}>
+    <button formAction={handleClick} className="flex items-center h-12 bg-white shadow-xs hover:shadow-sm hover:bg-slate-100 hover:cursor-pointer text-black px-4 rounded" disabled={isLoading}>
     {/*<button formAction={formAction} className="flex items-center h-12 bg-gray-50 shadow-sm hover:bg-gray-100 text-black px-4 rounded" disabled={pending}>*/}
-      <img src={isLoading ? "images/logo/facebook-loading.webp" : "images/logo/facebook.png"} alt="Facebook login" width="30" height="30" />
+      <img src={loadingProvider === 'facebook' ? "images/logo/facebook-loading.webp" : "images/logo/facebook.png"} alt="Facebook login" width="30" height="30" />
       <span className={`ml-4 ${isLoading ? 'opacity-40' : ''}`}>Accedi con Facebook</span>
     </button>
   )

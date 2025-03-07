@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import LoginForm from '@components/login/form';
+import LoginForm from './login-form';
 
 export default function LoginPage() {
   return (
@@ -12,7 +12,7 @@ export default function LoginPage() {
         <LoginForm className="py-6" />
         <div className="">
           <p className="text-xs">
-            Iscrivendoti accetti i <Link href="/legal/terms" className="hover:text-blue-800">Termini di servizio</Link> e la nostra <Link href="/legal/privacy-policy" className="hover:text-blue-800">Informativa sulla privacy</Link>.
+            Iscrivendoti accetti i <Link href="/legal/terms" className="link">Termini di servizio</Link> e la nostra <Link href="/legal/privacy-policy" className="link">Informativa sulla privacy</Link>
           </p>
         </div>
       </div>

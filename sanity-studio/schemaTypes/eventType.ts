@@ -38,6 +38,7 @@ export const eventType = defineType({
       },
       title: 'Tipo',
       validation: Rule => Rule.required(),
+      readOnly: ({currentUser}) => !hasRole(currentUser, 'owner')
     }),
     defineField({
       name: 'serie',
@@ -45,6 +46,7 @@ export const eventType = defineType({
       to: [{type: 'serie'}],
       title: 'Circuito',
       hidden: ({document}) => document?.type !== 'race',
+      readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
       options: {
         disableNew: true,
       }
@@ -125,14 +127,25 @@ export const eventType = defineType({
           disableNew: true,
         }
       }],
+      readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
     }),
-    defineField({
-      name: 'description',
-      type: 'array',
-      of: [{type: 'block'}],
-      title: 'Descrizione',
-      description: 'Descrizione dettagliata che comparirà nella pagina dedicata all\'evento',
-    }),
+    {
+      name: 'entry_type',
+      type: 'string',
+      title: 'Form di Iscrizione',
+      description: 'Modifica i campi nel form di iscrizione (nome, visibilità, obbligatorietà...)',
+      options: {
+        list: [
+          {title: 'Minimale', value: 'minimal'},
+          {title: 'Goinup', value: 'goinup'},
+          {title: 'Completo', value: 'full'},
+          {title: 'Fidal', value: 'fidal'},
+        ]
+      },
+      initialValue: 'goinup',
+      hidden: ({document}) => document?.type !== 'race',
+      readOnly: ({currentUser}) => !hasRole(currentUser, 'admin')
+    },
     defineField({
       name: 'payment_methods',
       type: 'array',

@@ -1,9 +1,14 @@
-import {defineField, defineType, defineArrayMember} from 'sanity'
+import { defineField, defineType, defineArrayMember } from 'sanity'
 import { hasRole } from '../lib/auth'
-
-export const serieType = defineType({
-  name: 'serie',
-  title: 'Serie',
+/*
+per ogni campo...
+label: string
+required: boolean 
+placeholder: string
+*/
+export const entryFormType = defineType({
+  name: 'entry_form',
+  title: 'Form di Iscrizione',
   type: 'document',
   fields: [
     defineField({
@@ -20,16 +25,34 @@ export const serieType = defineType({
       readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
     }),
     defineField({
-      name: 'start_date',
+      name: 'date',
       type: 'datetime',
-      title: 'Data di Inizio',
+      title: 'Data',
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'end_date',
-      type: 'datetime',
-      title: 'Data di Fine',
+      name: 'type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Gara', value: 'race'},
+          {title: 'Circuito', value: 'serie'},
+          {title: 'Cena', value: 'dining'},
+          {title: 'Premiazione', value: 'award'},
+        ]
+      },
+      title: 'Tipo',
       validation: Rule => Rule.required(),
+    }),
+    defineField({
+      name: 'serie',
+      type: 'reference',
+      to: [{type: 'serie'}],
+      title: 'Circuito',
+      hidden: ({document}) => document?.type !== 'race',
+      options: {
+        disableNew: true,
+      }
     }),
     defineField({
       name: 'status',
@@ -47,16 +70,16 @@ export const serieType = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'summary',
-      type: 'text',
-      title: 'Sommario',
-      description: 'Breve descrizione dell\'evento che comparirà in homepage',
+      name: 'price',
+      type: 'number',
+      title: 'Prezzo',
+      description: 'In centesimi (es. 12€ => 1200)',
     }),
     defineField({
       name: 'summary_image',
       type: 'image',
-      title: 'Locandina',
-      description: 'Locandina del circuito da mostrare in homepage',
+      title: 'Immagine di copertina',
+      description: 'Immagine rappresentativa che comparirà in homepage',
     }),
     defineField({
       name: 'description',
@@ -68,9 +91,21 @@ export const serieType = defineType({
     defineField({
       name: 'flyer',
       type: 'image',
-      title: 'Immagine carnet',
-      description: 'Immagine per la sezione di vendita del carnet',
+      title: 'Locandina',
+      description: 'Locandina con i dettagli dell\'evento',
     }),
+
+    {
+      title: 'Dettagli gara',
+      name: 'details',
+      type: 'object',
+      fields: [
+        {name: 'distance', type: 'number', title: 'Distanza'},
+        {name: 'elevation_gain', type: 'number', title: 'Dislivello'},
+      ],
+      hidden: ({document}) => document?.type !== 'race',
+    },
+
     defineField({
       name: 'opening_date',
       type: 'datetime',
@@ -85,6 +120,14 @@ export const serieType = defineType({
       //initialValue: ({ document }) => new Date(document?.date ?? '2024-01-01 21:00:00').toISOString(),
     }),
     defineField({
+      name: 'products',
+      type: 'array',
+      of: [{type: 'object',fields: []}],
+      title: 'Capacità',
+      description: 'Numero massimo di partecipanti',
+      hidden: ({document}) => document
+    }),
+    defineField({
       name: 'payment_methods',
       type: 'array',
       of: [{type: 'string'}],
@@ -95,7 +138,7 @@ export const serieType = defineType({
           {title: 'Contanti', value: 'cash'},
         ]
       },
-      initialValue: ['stripe', 'sepa'],
+      initialValue: ['stripe', 'cash'],
       title: 'Metodi di Pagamento',
       readOnly: ({currentUser}) => !hasRole(currentUser, 'admin')
     }),
@@ -135,11 +178,12 @@ export const serieType = defineType({
   preview: {
     select: {
       title: 'name',
-      date: 'start_date',
+      date: 'date',
       media: 'summary_image'
     },
     prepare({title, date, media}) {
-      const subtitle = date ? new Date(date).getFullYear().toString() : '';
+      const formatter = new Intl.DateTimeFormat('it', { month: 'long' });
+      const subtitle = date ? formatter.format(new Date(date)) + ' ' + new Date(date).getFullYear().toString() : '';
 
       return {
         title: title,

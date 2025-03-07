@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS series (
   id uuid primary key,
   name text not null,
   slug text not null,
-  date timestamp not null,
+  start_date timestamp not null,
+  end_date timestamp not null,
   status text not null default 'internal',
   summary text,
   summary_image text,
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS series (
 );
 
 CREATE TABLE IF NOT EXISTS events (
-  id text primary key,
+  id uuid primary key,
   name text not null,
   slug text not null,
   date timestamp not null,
@@ -28,12 +29,30 @@ CREATE TABLE IF NOT EXISTS events (
   flyer text,
   capacity smallint,
   details jsonb,
-
   regulation text,
-  opening_date timestamp, --opening_selling_date, start_selling_date ???
+  opening_date timestamp,
   closing_date timestamp,
+  entry_type text,
   payment_methods json
 ); -- va aggiunto promoter_id / group / organizer
+
+CREATE TABLE IF NOT EXISTS products (
+  id uuid primary key,
+  name text not null,
+  slug text not null,
+  type text not null,
+  status text not null default 'internal',
+  price smallint not null,
+  stock smallint,
+  summary text,
+  description text
+); -- poi ci sarà la tabella products_variations
+
+CREATE TABLE IF NOT EXISTS events_products (
+  event_id uuid references events(id) ON DELETE CASCADE,
+  product_id uuid references products(id) ON DELETE CASCADE,
+  primary key (event_id, product_id)
+);
 
 vendors
 promoters

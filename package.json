@@ -11,16 +11,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mantine/core": "^7.17.1",
+    "@mantine/dates": "^7.17.1",
+    "@mantine/form": "^7.17.1",
+    "@mantine/hooks": "^7.17.1",
     "@sanity/image-url": "^1.1.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
     "clsx": "^2.1.1",
+    "codice-fiscale-js": "^2.3.22",
     "dayjs": "^1.11.13",
+    "framer-motion": "^12.4.9",
     "next": "15.2.0",
     "next-sanity": "^9.8.60",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sanity": "^3.77.2"
+    "sanity": "^3.77.2",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -4,6 +4,7 @@ import { getEvent, getEvents } from '@utils/sanity/queries';
 import { urlFor } from '@utils/sanity';
 import { notFound } from 'next/navigation';
 import { dt } from '@utils/date';
+import EventProducts from './event-products';
 
 interface Params {
   slug: string;
@@ -20,7 +21,7 @@ export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const events = await getEvents()
- 
+
   return events.map((event: any) => ({
     slug: event.slug.current,
   }))
@@ -53,7 +54,6 @@ export default async function EventPage({
     notFound();
   }
 
-  console.log(event)
   //const items = await getItems({ eventId: event.id, status: 'published' })
 
   return (
@@ -66,7 +66,7 @@ export default async function EventPage({
 
           <div className="mt-8">
             <Link href={event.regulation ?? "/regulation"}>
-              <span className="text-button hover:opacity-80">Consulta il regolamento</span>
+              <span className="link">Consulta il regolamento</span>
             </Link>
           </div>
 
@@ -79,11 +79,12 @@ export default async function EventPage({
 
             {(!!event.items?.length && event.category === 'race') && <div className="mt-8">
               <Link href={{ pathname: `${event?.id}/entries`, query: { q: '' /*base64.encode(event)*/ } }}>
-                <span className="text-button">Vedi elenco iscritti</span>
+                <span className="clickable">Vedi elenco iscritti</span>
               </Link>
             </div>}
           </div>
-
+          
+          <EventProducts event={event} />
         </div>
 
         <div className="flex lg:justify-end">

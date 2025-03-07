@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/it';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 declare module 'dayjs' {
   interface Dayjs {
@@ -12,6 +13,7 @@ declare module 'dayjs' {
 dayjs.locale('it');
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(customParseFormat);
 dayjs.extend((option, dayjsClass, dayjsFactory) => {
   dayjsClass.prototype.datetime = function () {
     return getDateTime(this);

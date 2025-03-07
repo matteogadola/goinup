@@ -1,4 +1,5 @@
 import { createClient } from './server'
+import clubs from '../data/names.json'
 
 export const getUpcomingEvents = async () => {
   const supabase = await createClient()
@@ -20,4 +21,8 @@ export const getUpcomingEvents = async () => {
   return data ?? [];
 
   //return client.fetch(`*[_type == "event" && status != "internal" && date >= "${today}"] | order(date) [0...2]`)
+}
+
+export const getClubs = (): string[] => {
+  return clubs
 }
