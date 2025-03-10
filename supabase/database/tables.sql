@@ -94,7 +94,8 @@ CREATE TABLE IF NOT EXISTS order_items (
 );
 
 CREATE TABLE IF NOT EXISTS entries (
-  order_item_id int primary key references order_items (id),
+  id serial primary key,
+  order_item_id int references order_items (id),
   order_id int references orders (id) ON DELETE CASCADE NOT NULL,
   event_id uuid references events (id),
 
