@@ -110,8 +110,11 @@ CREATE TABLE IF NOT EXISTS entries (
   email text,
   phone_number text,
   bib_number smallint,
-  fidal_card text
+  fidal_card text,
 );
+
+--CREATE UNIQUE INDEX ON entries (event_id, tin)
+--WHERE event_id IS NOT NULL AND tin IS NOT NULL;
 
 
 CREATE OR REPLACE VIEW v_entries_public

@@ -9,7 +9,6 @@ import { createFormActions, isNotEmpty, useForm } from '@mantine/form';
 import { getClubs } from "@utils/sanity/queries";
 import { useState } from "react";
 //import { useForm, SubmitHandler } from 'react-hook-form'
-import Input from "@components/form/input";
 import { createClient } from '@utils/supabase/client';
 import EventEntryTinForm from "./event-entry-tin-form";
 import { useCartStore } from "@store/cart";
