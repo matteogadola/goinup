@@ -54,6 +54,8 @@ export default async function EventPage({
     notFound();
   }
 
+  const flyer = event.products?.[0]?.summary_image || event.flyer
+
   //const items = await getItems({ eventId: event.id, status: 'published' })
 
   return (
@@ -87,11 +89,11 @@ export default async function EventPage({
           <EventProducts event={event} />
         </div>
 
-        <div className="flex lg:justify-end">
-          {event.flyer === true &&
+        <div className="flex lg:justify-center items-start">
+          {!!flyer &&
             <img
-              src={urlFor(event.flyer).url()}
-              className="mt-4 lg:mt-0"
+              src={urlFor(flyer).url()}
+              className="mt-4 lg:mt-0 aspect-auto"
               alt="Flyer"
               width={500}
               height={500}

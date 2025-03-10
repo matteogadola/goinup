@@ -41,17 +41,6 @@ export const eventType = defineType({
       readOnly: ({currentUser}) => !hasRole(currentUser, 'owner')
     }),
     defineField({
-      name: 'serie',
-      type: 'reference',
-      to: [{type: 'serie'}],
-      title: 'Circuito',
-      hidden: ({document}) => document?.type !== 'race',
-      readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
-      options: {
-        disableNew: true,
-      }
-    }),
-    defineField({
       name: 'status',
       type: 'string',
       options: {
@@ -91,30 +80,17 @@ export const eventType = defineType({
       title: 'Locandina',
       description: 'Locandina con i dettagli dell\'evento',
     }),
-
-    {
+    defineField({
       title: 'Dettagli gara',
       name: 'details',
       type: 'object',
       fields: [
         {name: 'distance', type: 'number', title: 'Distanza'},
         {name: 'elevation_gain', type: 'number', title: 'Dislivello'},
+        {name: 'start_line', type: 'number', title: 'Luogo di Partenza'},
+        {name: 'finish_line', type: 'number', title: 'Luogo di Arrivo'},
       ],
       hidden: ({document}) => document?.type !== 'race',
-    },
-
-    defineField({
-      name: 'opening_date',
-      type: 'datetime',
-      title: 'Apertura iscrizioni',
-      description: 'Data di inizio vendita iscrizioni',
-    }),
-    defineField({
-      name: 'closing_date',
-      type: 'datetime',
-      title: 'Chiusura iscrizioni',
-      description: 'Data di chiusura delle iscrizioni',
-      //initialValue: ({ document }) => new Date(document?.date ?? '2024-01-01 21:00:00').toISOString(),
     }),
     defineField({
       name: 'products',
@@ -128,38 +104,6 @@ export const eventType = defineType({
         }
       }],
       readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
-    }),
-    {
-      name: 'entry_type',
-      type: 'string',
-      title: 'Form di Iscrizione',
-      description: 'Modifica i campi nel form di iscrizione (nome, visibilità, obbligatorietà...)',
-      options: {
-        list: [
-          {title: 'Minimale', value: 'minimal'},
-          {title: 'Goinup', value: 'goinup'},
-          {title: 'Completo', value: 'full'},
-          {title: 'Fidal', value: 'fidal'},
-        ]
-      },
-      initialValue: 'goinup',
-      hidden: ({document}) => document?.type !== 'race',
-      readOnly: ({currentUser}) => !hasRole(currentUser, 'admin')
-    },
-    defineField({
-      name: 'payment_methods',
-      type: 'array',
-      of: [{type: 'string'}],
-      options: {
-        list: [
-          {title: 'Bonifico', value: 'sepa'},
-          {title: 'Stripe', value: 'stripe'},
-          {title: 'Contanti', value: 'cash'},
-        ]
-      },
-      initialValue: ['stripe', 'cash'],
-      title: 'Metodi di Pagamento',
-      readOnly: ({currentUser}) => !hasRole(currentUser, 'admin')
     }),
     defineField({
       name: 'results',

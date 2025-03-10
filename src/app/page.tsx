@@ -19,7 +19,19 @@ export default async function Home() {
           <h2 className="mt-2 text-xl"><span className="px-1 bg-blue-200">GOinUP</span> è un gruppo di associazioni che coordina e promuove l'omonimo circuito di gare di montagna. Il nostro obbiettivo è quello di riuscire a donare il maggior numero di attrezzature e servizi a diverse associazioni benefiche nel mandamento di Morbegno</h2>
       </div>
 
-      <div className="hidden lg:flex items-start">
+      <div className="hidden lg:flex lg:flex-col items-start">
+        <div className="shadow-lg ">
+          <FadeUpAnimation>
+            <img src="/images/homepage/lino.jpg" alt="Header image" className="grayscale-50" width={400} />
+          </FadeUpAnimation>
+        </div>
+        <div className="relative z-10 left-10 -top-7 shadow-lg">
+          <FadeUpAnimation>
+            <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-50" width={500} />
+          </FadeUpAnimation>
+        </div>
+      </div>
+      {/*<div className="hidden lg:flex items-start">
         <div className="shadow-lg z-10">
           <FadeUpAnimation>
             <img src="/images/tre.webp" alt="Header image" className="" width={300} />
@@ -30,34 +42,24 @@ export default async function Home() {
             <img src="/images/due.webp" alt="Header image" className="" width={300} />
           </FadeUpAnimation>
         </div>
-      </div>
-      
-      {/*<div className="flex min-h-64 space-x-4 justify-center items-center">
-        <div className="bg-blue-500">
-          <img src="images/due.webp" alt="Header image" className="" width={300} />
-        </div>
-        <div className="bg-red-500">
-          <img src="images/uno.webp" alt="Header image" className="" width={300} />
-        </div>
-        <div className="bg-yellow-500">
-          <img src="images/tre.webp" alt="Header image" className="" width={300} />
-        </div>
       </div>*/}
+      
     </div>
 
-    {serie.status === 'open' && <BannerCarnet serie={serie} />}
+
+    {serie.status === 'open' && <BannerCarnet serie={serie} className="mt-16" />}
 
     {upcomingEvents.length > 0 &&
       <div className="flex flex-col mt-32 justify-center items-center space-y-16">
-        <span className="text-3xl">Iscriviti alle prossime gare</span>
+        <span className="text-3xl">Prossimi eventi</span>
 
         <UpcomingEvents events={upcomingEvents} />
       </div>
     }
     
-    {!!serie?.summary_image &&
+    {!!serie?.flyer &&
       <div className="flex mt-32 justify-center items-center">
-        <img src={urlFor(serie.summary_image).url()} alt="goinup flyer" className="" width={700} />
+        <img src={urlFor(serie.flyer).url()} alt="goinup flyer" className="" width={700} />
       </div>
     }
 

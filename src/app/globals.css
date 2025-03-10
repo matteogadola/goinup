@@ -6,6 +6,7 @@
 @import "@mantine/core/styles.css";
 @import "@mantine/dates/styles.css";
 
+@import "./polaroid.css";
 /*
 https://github.com/orgs/mantinedev/discussions/1672#discussioncomment-7561382
 @layer theme, base, mantine, components, utilities;
@@ -70,6 +71,42 @@ body {
 
 
 
+/*.title {
+  font-family: var(--font-unbounded);
+
+  h1 {
+    font-size: var(--text-2xl);
+    line-height: var(--tw-leading, var(--text-2xl--line-height));
+  }
+
+  span.highlighted {
+    padding-inline: calc(var(--spacing) * 1);
+    background-color: var(--color-yellow-200);
+  }
+}*/
+
+h1 {
+  font-size: var(--text-2xl);
+  line-height: var(--tw-leading, var(--text-2xl--line-height));
+
+  &.title {
+    font-family: var(--font-unbounded);
+  }
+}
+
+.highlighted {
+  padding-inline: calc(var(--spacing) * 1);
+  background-color: var(--color-yellow-200);
+}
+
+/*.title {
+  font-family: var(--font-unbounded);
+
+  h1 {
+    font-size: var(--text-2xl);
+    line-height: var(--tw-leading, var(--text-2xl--line-height));
+  }
+}*/
 
 
 

@@ -144,7 +144,7 @@ export default function Credits({ className }: { className?: string }) {
           {sponsors.map((item, index) =>
             <div key={index} className="flex flex-grow w-1/2 lg:w-1/3 justify-center items-center h-18">
               <a href={item.url} target="_blank" rel="noopener noreferrer" className={clsx({"col-span-2 lg:col-span-3": index === sponsors.length - 1 })}>
-                <img src={`images/credits/${item.logo}`} className={clsx(item.className, "object-contain")} alt={item.name} />
+                <img src={`/images/credits/${item.logo}`} className={clsx(item.className, "object-contain")} alt={item.name} />
               </a>
             </div>
           )}
@@ -157,7 +157,7 @@ export default function Credits({ className }: { className?: string }) {
           {supporters.map((item, index) =>
             <div key={index} className="flex flex-grow w-1/2 lg:w-1/4 justify-center items-center h-18">
               <a href={item.url} target="_blank" rel="noopener noreferrer" className={clsx({ "col-span-2 lg:col-span-3": index === sponsors.length - 1 })}>
-                <img src={`images/credits/${item.logo}`} className={clsx(item.className, "object-contain")} alt={item.name} />
+                <img src={`/images/credits/${item.logo}`} className={clsx(item.className, "object-contain")} alt={item.name} />
               </a>
             </div>
           )}
@@ -170,7 +170,7 @@ export default function Credits({ className }: { className?: string }) {
           {partners.map((item, index) =>
             <div key={index} className="flex flex-grow w-1/2 lg:w-1/4 justify-center items-center h-18">
               <a href={item.url} target="_blank" rel="noopener noreferrer" className={clsx({ "col-span-2 lg:col-span-3": index === sponsors.length - 1 })}>
-                <img src={`images/credits/${item.logo}`} className={clsx(item.className, "object-contain")} alt={item.name} />
+                <img src={`/images/credits/${item.logo}`} className={clsx(item.className, "object-contain")} alt={item.name} />
               </a>
             </div>
           )}

@@ -93,14 +93,21 @@ export default function EventEntryForm({ event, product }: { event: any, product
   END IF;
   }
 */
+
+  const entryExist = async (entry: any) => {
+    const { data, error } = await supabase.rpc('entry_prevent_duplicate', {
+      _tin: entry.tin,
+      _first_name: entry.first_name,
+      _last_name: entry.last_name,
+      _birth_year: dt(entry.birth_date).year()
+    })
+
+    if (error) throw new Error(error.message)
+
+    return data
+  }
+
   const onSave = async () => {
-    
-let { data: ue, error:eu } = await supabase
-.rpc('prova', {
-  p_id: 'bcf23c4e-326f-423e-bfc4-cbafe9983eee'
-})
-if (eu) console.error(eu)
-else console.log(ue)
 
     if (form.validate().hasErrors) return;
     console.log("supero")
@@ -111,6 +118,7 @@ else console.log(ue)
     const { data: { user }, error } = await supabase.auth.getUser()
     console.log("auth", user?.id)
 
+    // ATTENZIONE PERCHE NON SEMPRE C'è TIN eh
     if (items.find(item => item.entry?.tin === data.tin)) {
       form.setFieldError('tin', 'Codice fiscale già presente in carrello');
       return
@@ -124,9 +132,9 @@ else console.log(ue)
       description: `${data.first_name} ${data.last_name}`,
       price: product.price,
       quantity: 1,
-      //event,
-      //event_id: event.id, // quasi io metterei event intero...
-      //entry: data,
+      payment_methods: product.payment_methods,
+      event_id: event.id,
+      entry: data,
     })
 
     form.reset()
@@ -253,9 +261,9 @@ else console.log(ue)
             </span>
           </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-            <Button onClick={onSave} variant="outline" classNames={{label: 'light'}}>Salva e iscrivi altro partecipante</Button>
-            <Button onClick={onSubmit} variant="filled" classNames={{label: 'light'}}>Salva e vai al pagamento</Button>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+            <Button onClick={onSave} variant="outline" classNames={{label: 'light'}}>Iscrivi altro partecipante</Button>
+            <Button onClick={onSubmit} variant="filled" classNames={{label: 'light'}}>Vai al pagamento</Button>
           </div>
 
         </form>

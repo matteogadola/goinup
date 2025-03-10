@@ -13,21 +13,14 @@ export const productType = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
-      name: 'slug',
-      type: 'slug',
-      title: 'Url',
-      validation: Rule => Rule.required(),
-      readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
-    }),
-    defineField({
       name: 'type',
       type: 'string',
       options: {
         list: [
           {title: 'Iscrizione', value: 'entry'},
           {title: 'Carnet', value: 'carnet'},
-          {title: 'Cena', value: 'closed'},
-          {title: 'Maglietta', value: 'sold-out'},
+          //{title: 'Cena', value: 'closed'},
+          //{title: 'Maglietta', value: 'sold-out'},
         ]
       },
       initialValue: 'entry',
@@ -56,10 +49,10 @@ export const productType = defineType({
       description: 'Breve descrizione dell\'evento che comparirà in homepage',
     }),
     defineField({
-      name: 'images',
-      type: 'array',
-      of: [{type: 'image'}],
-      title: 'Immagini',
+      name: 'summary_image',
+      type: 'image',
+      title: 'Immagine di copertina',
+      description: 'Immagine rappresentativa che comparirà in homepage',
     }),
     defineField({
       name: 'description',
@@ -67,6 +60,12 @@ export const productType = defineType({
       of: [{type: 'block'}],
       title: 'Descrizione',
       description: 'Descrizione dettagliata che comparirà nella pagina dedicata all\'evento',
+    }),
+    defineField({
+      name: 'images',
+      type: 'array',
+      of: [{type: 'image'}],
+      title: 'Immagini del prodotto',
     }),
     defineField({
       name: 'price',
@@ -81,18 +80,59 @@ export const productType = defineType({
       title: 'Quantità disponibile',
       validation: Rule => Rule.integer(),
     }),
+    defineField({
+      name: 'start_sale_date',
+      type: 'datetime',
+      title: 'Apertura iscrizioni',
+      description: 'Data di inizio vendita iscrizioni',
+    }),
+    defineField({
+      name: 'end_sale_date',
+      type: 'datetime',
+      title: 'Chiusura iscrizioni',
+      description: 'Data di chiusura delle iscrizioni',
+      //initialValue: ({ document }) => new Date(document?.date ?? '2024-01-01 21:00:00').toISOString(),
+    }),
+    defineField({
+      name: 'entry_form',
+      type: 'reference',
+      to: [{type: 'entry_form'}],
+      title: 'Form di Iscrizione',
+      description: 'Modifica i campi nel form di iscrizione (nome, visibilità, obbligatorietà...)',
+      hidden: ({document}) => document?.type !== 'entry' && document?.type !== 'carnet',
+      readOnly: ({currentUser}) => !hasRole(currentUser, 'owner'),
+      options: {
+        disableNew: true,
+      }
+    }),
+    defineField({
+      name: 'payment_methods',
+      type: 'array',
+      of: [{type: 'string'}],
+      options: {
+        list: [
+          {title: 'Bonifico', value: 'sepa'},
+          {title: 'Stripe', value: 'stripe'},
+          {title: 'Contanti', value: 'cash'},
+        ]
+      },
+      initialValue: ['stripe', 'cash'],
+      title: 'Metodi di Pagamento',
+      readOnly: ({currentUser}) => !hasRole(currentUser, 'admin')
+    }),
     
   ],
   preview: {
     select: {
       title: 'name',
+      subtitle: 'status',
       media: 'images'
     },
-    prepare({title, media}) {
+    prepare({title, subtitle, media}) {
 
       return {
         title: title,
-        //subtitle: subtitle,
+        subtitle: subtitle,
         media: media?.[0]
       }
     }

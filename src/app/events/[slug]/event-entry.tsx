@@ -29,7 +29,7 @@ export default function EventEntry({ event, product }: { event: any, product: an
         <span className ="font-unbounded font-light px-1 bg-yellow-200">{product.price / 100}€</span>
       </div>
 
-      <p>{product.summary}</p>
+      <p className="text-gray-600">{product.summary}</p>
       <div className="hidden">
         <EventEntryStatus event={event} />
       </div>

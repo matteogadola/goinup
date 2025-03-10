@@ -5,7 +5,7 @@ import EventEntry from "./event-entry";
 
 export default async function EventProducts({ event }: { event: any }) {
 
-  if (event.type === 'race') {
+  if (['race', 'serie'].includes(event.type)) {
     if (!event.products?.length) {
       return <></>
     } else if (event.products?.length === 1) {

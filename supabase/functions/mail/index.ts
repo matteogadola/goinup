@@ -21,7 +21,7 @@ app.post('/mail', async (c) => {
         'content-type': 'application/json',
         'api-key': BREVO_API_KEY,
       },
-      body,
+      body: JSON.stringify(body),
     })
 
     const data = await res.text()
@@ -32,9 +32,9 @@ app.post('/mail', async (c) => {
         'Content-Type': 'application/json; charset=utf-8',
       },
     })
-  } catch (err) {
-    console.error(err)
-    return new Response(String(err?.message ?? err), { status: 500 })
+  } catch (e: any) {
+    console.error(e)
+    return c.json({ error: e.message }, 500)
   }
 });
 

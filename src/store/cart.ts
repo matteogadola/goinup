@@ -19,16 +19,22 @@ export const useCartStore = create<CartState>()((set) => ({
 export interface CartStore {
   //isEmpty: boolean
   items: Item[]
+  paymentMethod: string
   addItem: (item: Item) => void
+  removeItem: (index: number) => void
+  setPaymentMethod: (paymentMethod: string) => void
 }
 
-interface Item {
+export interface Item {
   product_id: string;
   product_name: string;
   description: string;
   price: number;
   quantity: number;
-  entry?: EntryForm;
+  payment_methods: string[];
+  event_id: string;
+  entry?: any;//EntryForm;
+
   //isEmpty: boolean
   //items: any[]
   //setLoading: (action: string | null | undefined) => void
@@ -45,5 +51,8 @@ interface Item {
 export const useCartStore = create<CartStore>((set) => ({
   //order: null,
   items: [],
+  paymentMethod: 'stripe',
   addItem: (item) => set((state) => ({ items: [...state.items, item] })),
+  removeItem: (index) => set((state) => ({ items: state.items.toSpliced(index, 1) })),
+  setPaymentMethod: (paymentMethod) => set(() => ({ paymentMethod })),
 }))

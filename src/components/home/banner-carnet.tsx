@@ -11,6 +11,16 @@ export default function BannerCarnet({ serie, className }: { serie: any, classNa
     //return <></>
   }
 
+  if (serie === 'close') {
+    return
+  }
+
+  if (!serie.products?.length) {
+    return
+  }
+
+  const product = serie.products[0]
+
   return (
     <section className={clsx("mx-auto px-4 lg:px-48", className)}>
       <Link href={`events/${serie.slug.current}`}>
@@ -21,9 +31,9 @@ export default function BannerCarnet({ serie, className }: { serie: any, classNa
           </div>
           <div className="w-full md:w-3/5 h-full flex items-center bg-white rounded-lg">
             <div className="p-12 md:pr-24 md:pl-16 md:py-12">
-              <h1 className="overtitle">Prevendita</h1>
-              <h3 className="title">Carnet 11 gare</h3>
-              <p className="mt-4 text-gray-600">Acquista il carnet per tutte e 11 le gare del circuito GOinUP.</p>
+              <h1 className="font-unbounded capitalize"><span className="px-1 bg-yellow-200">Prevendita</span></h1>
+              <h3 className="font-unbounded text-2xl font-semibold uppercase">Carnet 10 gare</h3>
+              <p className="mt-4 text-gray-600">Acquista il carnet per tutte e 10 le gare del circuito GOinUP più la gara amica Mirtillo Vertical.</p>
               <div className="flex items-baseline mt-3">
                 <span className="text-button hover:opacity-70">Maggiori informazioni</span>
                 <span className="text-xs ml-1">&#x279c;</span>

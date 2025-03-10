@@ -6,15 +6,15 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT NOT NULL,
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
-  created_at timestamp,                                                -- 8 bytes
-  updated_at timestamp,                                                -- 8 bytes
+  created_at timestamp,                                                 -- 8 bytes
+  updated_at timestamp,                                                 -- 8 bytes
   avatar_url TEXT,
   phone_number TEXT,
   tin TEXT,
   country TEXT,
   birth_place TEXT,
-  birth_date DATE,                                                     -- 4 bytes
-  gender GENDER,                                                       -- 1 byte (+4 bytes of enum's definition)
+  birth_date DATE,                                                      -- 4 bytes
+  gender GENDER,                                                        -- 1 byte (+4 bytes of enum's definition)
   team TEXT,
   fidal_card TEXT
 );
