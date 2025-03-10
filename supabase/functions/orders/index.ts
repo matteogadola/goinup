@@ -31,7 +31,6 @@ app.post('/orders', async (c) => {
     { id: '6d769257-7022-468e-a0fd-0a38cf0628c2', event_id: '94134137-72eb-4824-9144-e3ccefda50cb' },
   ];
 
-  
   const items = [];
   const entries: any[] = [];
   const orderItems: any[] = [];
@@ -144,12 +143,12 @@ app.post('/orders', async (c) => {
 
           const { rows: entrieRows } = await transaction.queryObject(
             `INSERT INTO entries (order_item_id, order_id, item_id, event_id, first_name, last_name, birth_date, birth_place,
-            gender, country, team, email, phone_number, tin, fidal_card)
+            gender, country, club, email, phone_number, tin, fidal_card)
             VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
             ON CONFLICT ON CONSTRAINT entries_unique
             DO UPDATE SET order_item_id = excluded.order_item_id, order_id = excluded.order_id, item_id = excluded.item_id,
             first_name = excluded.first_name, last_name = excluded.last_name, birth_date = excluded.birth_date,
-            birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, team = excluded.team,
+            birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, club = excluded.club,
             email = excluded.email, phone_number = excluded.phone_number, fidal_card = excluded.fidal_card
             WHERE entries.event_id = excluded.event_id AND entries.tin = excluded.tin`,
             [
@@ -185,7 +184,7 @@ app.post('/orders', async (c) => {
             birth_place: item.entry.birth_place ?? cf.birthplace.nome,
             gender: item.entry.gender ?? cf.gender,
             country: item.entry.country,
-            team: item.entry.team,
+            club: item.entry.club,
             email: item.entry.email,
             phone_number: item.entry.phone_number,
             tin: item.entry.tin,
@@ -195,23 +194,17 @@ app.post('/orders', async (c) => {
 
         // tarrozzata !
         if (item?.entry && item.product_id === '6561bc35-0ee0-4c25-a515-e50b43d1c95c') {
-          item.entry.first_name = capitalize(item.entry.first_name);
-          item.entry.last_name = capitalize(item.entry.last_name);
           const cf = verifyTin(item.entry.tin, item.entry.first_name, item.entry.last_name);
-
-          if (item.entry.team) {
-            item.entry.team = item.entry.team.trim();
-          }
 
           for (let row of carnetItems) {
             const { rows: entrieRows } = await transaction.queryObject(
               `INSERT INTO entries (order_item_id, order_id, item_id, event_id, first_name, last_name, birth_date, birth_place,
-              gender, country, team, email, phone_number, tin)
+              gender, country, club, email, phone_number, tin)
               VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
               ON CONFLICT ON CONSTRAINT entries_unique
               DO UPDATE SET order_item_id = excluded.order_item_id, order_id = excluded.order_id, item_id = excluded.item_id,
               first_name = excluded.first_name, last_name = excluded.last_name, birth_date = excluded.birth_date,
-              birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, team = excluded.team,
+              birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, club = excluded.club,
               email = excluded.email, phone_number = excluded.phone_number
               WHERE entries.event_id = excluded.event_id AND entries.tin = excluded.tin`,
               [
@@ -226,7 +219,7 @@ app.post('/orders', async (c) => {
                 item.entry.birth_place ?? cf.birthplace.nome,
                 item.entry.gender ?? cf.gender,
                 item.entry.country,
-                item.entry.team,
+                item.entry.club,
                 item.entry.email,
                 item.entry.phone_number,
                 item.entry.tin,
@@ -247,7 +240,7 @@ app.post('/orders', async (c) => {
               birth_place: item.entry.birth_place ?? cf.birthplace.nome,
               gender: item.entry.gender ?? cf.gender,
               country: item.entry.country,
-              team: item.entry.team,
+              club: item.entry.club,
               email: item.entry.email,
               phone_number: item.entry.phone_number,
               tin: item.entry.tin,
@@ -274,6 +267,8 @@ app.post('/orders', async (c) => {
         throw new Error(`${lastEntry?.description} risulta già iscritto`);
       }
     }
+
+    throw new Error(e.message);
   } finally {
     client.release();
   }

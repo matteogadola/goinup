@@ -2,7 +2,7 @@
  * viene invocata da sanity.io
  */
 import { Hono } from 'jsr:@hono/hono'
-import * as postgres from 'https://deno.land/x/postgres@v0.19.3/mod.ts'
+import * as postgres from 'https://deno.land/x/postgres/mod.ts'
 
 // Get the connection string from the environment variable "SUPABASE_DB_URL"
 const databaseUrl = Deno.env.get('SUPABASE_DB_URL')!
@@ -51,7 +51,7 @@ app.post('/sanity-webhook', async (c) => {
                 INSERT INTO events_products (event_id, product_id)
                 VALUES ($1, $2)
                 ON CONFLICT DO NOTHING`,
-                [body._id, product._id]
+                [body._id, product._ref]
               );
             }
           }

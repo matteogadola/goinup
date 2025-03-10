@@ -10,6 +10,8 @@ export default async function Home() {
   const upcomingEvents = await getUpcomingEvents();
   const serie = (await getSeries({ year: 2025 }))?.[0];
 
+  console.log(upcomingEvents)
+
   return (
     <>
     <div className="flex justify-center items-center space-x-12 mt-8">
