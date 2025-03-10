@@ -16,7 +16,7 @@ export default async function Home() {
       <div className="flex flex-col lg:w-1/3 space-y-2 lg:-mt-20">
           <h3 className="text-lg text-gray-600">10 gare vertical di montagna</h3>
           <h1 className="mt-2 text-3xl">Circuito a finalità <span className="px-1 bg-yellow-200">benefica</span></h1>
-          <h2 className="mt-2 text-xl"><span className="px-1 bg-blue-200">GOinUP</span> è un gruppo di associazioni che coordina e promuove l'omonimo circuito di gare di montagna. Il nostro obbiettivo è quello di riuscire a donare il maggior numero di attrezzature e servizi a diverse associazioni benefiche nel mandamento di Morbegno</h2>
+          <h2 className="mt-2 text-xl"><span className="px-1 bg-blue-200">GOinUP</span> è un gruppo di associazioni che coordina e promuove l&apos;omonimo circuito di gare di montagna. Il nostro obbiettivo è quello di riuscire a donare il maggior numero di attrezzature e servizi a diverse associazioni benefiche nel mandamento di Morbegno</h2>
       </div>
 
       <div className="hidden lg:flex lg:flex-col items-start">

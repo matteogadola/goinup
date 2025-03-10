@@ -257,7 +257,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
         
           <p className="mt-6">
             <span className="block text-xs text-gray-600 dark:text-gray-500">
-              Completando l'iscrizione accetti i <a href="/legal/terms" target="_blank" className="link" rel="noopener noreferrer">Termini e condizioni</a> e l&apos;<a href="/legal/privacy-policy" target="_blank" className="link" rel="noopener noreferrer">informativa sulla privacy</a>
+              Completando l&apos;iscrizione accetti i <a href="/legal/terms" target="_blank" className="link" rel="noopener noreferrer">Termini e condizioni</a> e l&apos;<a href="/legal/privacy-policy" target="_blank" className="link" rel="noopener noreferrer">informativa sulla privacy</a>
             </span>
           </p>
 
