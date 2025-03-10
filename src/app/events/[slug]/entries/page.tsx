@@ -1,6 +1,6 @@
 'use client'
 
-import Spinner from '@/components/spinner';
+/*import Spinner from '@/components/spinner';
 import { base64 } from '@/lib/helpers';
 import { createClient } from '@/lib/supabase-auth-client';
 import { Event } from '@/types/events';
@@ -21,10 +21,14 @@ const supabase = createClient();
 const fetchEntries = cache(async (id: string) => {
   const { data } = await supabase.from('v_entries_public').select().eq('event_id', id);
   return data ?? [];
-});
+});*/
 
 export default function EventEntriesPage() {
-  const event = base64.decode<Event>(useSearchParams()?.get('q') ?? '')
+
+  return (
+    <></>
+  )
+  /*const event = base64.decode<Event>(useSearchParams()?.get('q') ?? '')
 
   const routePath = usePathname()?.split('/');
   const event_id = routePath?.[3];
@@ -64,7 +68,6 @@ export default function EventEntriesPage() {
 
         {!!state.items?.length &&
           <div className="mt-8">
-            {/*<input type="text" className="appearance-none bg-transparent border-b focus:outline-none" placeholder="Cognome" onChange={(e) => filterEntries(e)} />*/}
 
             <table className="text-sm">
               <thead>
@@ -95,5 +98,5 @@ export default function EventEntriesPage() {
       </section>
 
     </Suspense>
-  )
+  )*/
 }
