@@ -14,7 +14,7 @@ import { useMemo } from 'react';
 export default function CartItems({ className }: any) {
   const { items, removeItem } = useCartStore();
 
-  const totalAmount = useMemo(() => items)
+  const totalAmount = 0// useMemo(() => items)
 
   return (
     <>
