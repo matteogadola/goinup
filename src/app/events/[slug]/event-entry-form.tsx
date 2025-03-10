@@ -3,7 +3,7 @@ import { dt } from "@utils/date";
 import clsx from "clsx";
 import Link from "next/link";
 import { Autocomplete, Button, Checkbox, ComboboxItem, Group, MantineProvider, Modal, OptionsFilter, Select, TextInput } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { DateInput, DateInputProps, DatesProvider } from '@mantine/dates';
 import { createFormActions, isNotEmpty, useForm } from '@mantine/form';
 import { getClubs } from "@utils/sanity/queries";
@@ -38,6 +38,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
   const supabase = createClient()
   const router = useRouter()
   const [isTinModalOpened, { open: openTinModal, close: closeTinModal }] = useDisclosure(false)
+  const modalSize = useMediaQuery('(max-width: 50em)') ? '95%' : '60%';
   //const [cart, setCart] = useState<any>([])
   const { items, addItem } = useCartStore()
 
@@ -267,7 +268,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
 
         </form>
       
-        <Modal opened={isTinModalOpened} onClose={closeTinModal} title="Calcolo codice fiscale" withCloseButton={false} size="60%">
+        <Modal opened={isTinModalOpened} onClose={closeTinModal} title="Calcolo codice fiscale" withCloseButton={false} size={modalSize}>
           <EventEntryTinForm form={form} onClose={closeTinModal} />
         </Modal>
       </MantineProvider>

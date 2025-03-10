@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   status text default 'created' not null,-- pending error paid -- GENERATED ALWAYS AS (EXTRACT(EPOCH FROM (end_date - start_date)) / 60) STORED,
   event_id uuid references events (id),
   product_id uuid references products (id),
+  name text,
   description text,
   price smallint,
   quantity smallint,
@@ -95,9 +96,10 @@ CREATE TABLE IF NOT EXISTS order_items (
 
 CREATE TABLE IF NOT EXISTS entries (
   id serial primary key,
-  order_item_id int references order_items (id),
-  order_id int references orders (id) ON DELETE CASCADE NOT NULL,
-  event_id uuid references events (id),
+  order_item_id int references order_items (id) ON DELETE CASCADE,
+  order_id int references orders (id) ON DELETE CASCADE,
+  product_id uuid references products (id) ON DELETE SET NULL,
+  event_id uuid references events (id) ON DELETE SET NULL,
 
   first_name text not null,
   last_name text not null,
@@ -111,10 +113,8 @@ CREATE TABLE IF NOT EXISTS entries (
   phone_number text,
   bib_number smallint,
   fidal_card text,
+  CONSTRAINT entries_unique UNIQUE (event_id, tin)
 );
-
---CREATE UNIQUE INDEX ON entries (event_id, tin)
---WHERE event_id IS NOT NULL AND tin IS NOT NULL;
 
 
 CREATE OR REPLACE VIEW v_entries_public

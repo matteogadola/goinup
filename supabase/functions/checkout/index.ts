@@ -8,6 +8,8 @@ app.post('/checkout', async (c) => {
   const body = await c.req.json()
   const headers = c.req.header()
 
+  console.log(headers)
+
   const supabaseClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -15,7 +17,7 @@ app.post('/checkout', async (c) => {
 
   try {
     console.debug(`[checkout] body: ${JSON.stringify(body)}`);
-    //const order = await createOrder(body);
+
     const { data: order, error } = await supabaseClient.functions.invoke('orders', {
       method: 'POST',
       body: body

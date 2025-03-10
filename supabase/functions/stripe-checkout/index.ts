@@ -1,18 +1,20 @@
 import { Hono } from 'jsr:@hono/hono'
-import Stripe from 'https://esm.sh/stripe@14?target=denonext'
+import Stripe from 'https://esm.sh/stripe@16?target=denonext';
 //import { Buffer } from 'node:buffer'
+import { encodeBase64, decodeBase64 } from "jsr:@std/encoding";
+
 
 const app = new Hono()
 
 // https://stripe.com/docs/api/versioning
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'), {
   apiVersion: '2022-11-15',
 });
 
 app.post('/stripe-checkout', async (c) => {
   const { headers, order } = await c.req.json()
   // const { method, headers, body } = req;
-
+  console.log(order)
   // const { id } = await createCheckoutSession(headers, body);
 
   try {
@@ -36,7 +38,8 @@ app.post('/stripe-checkout', async (c) => {
       });
     }
 
-  const q = base64Encode(order);
+  //const encodedOrder = new TextEncoder().encode(JSON.stringify(order))
+  const q = 'lolle'//encodeBase64(encodedOrder);
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: 'payment',
     submit_type: 'pay',
@@ -57,9 +60,11 @@ app.post('/stripe-checkout', async (c) => {
         event_id: order.items[0].event_id ?? '',
       },
     },
-    success_url: `${headers.origin}/confirm?session_id={CHECKOUT_SESSION_ID}&q=${q}`,
-    cancel_url: headers.referer,
+    success_url: `https://goinupvertical.it/checkout/confirm?session_id={CHECKOUT_SESSION_ID}&q=${q}`,
+    cancel_url: 'https://goinupvertical.it/checkout',//headers.referer,
   };
+
+  console.log(params)
 
   return stripe.checkout.sessions.create(params);
   } catch (e: any) {
@@ -67,10 +72,5 @@ app.post('/stripe-checkout', async (c) => {
     return c.json({ error: e.message }, 500)
   }
 });
-
-function base64Encode (input: any) {
-  const data = typeof input !== 'string' ? JSON.stringify(input) : input
-  return Buffer.from(data).toString('base64')
-}
 
 Deno.serve(app.fetch);

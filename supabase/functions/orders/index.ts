@@ -3,12 +3,18 @@ import * as postgres from 'https://deno.land/x/postgres/mod.ts'
 import dayjs from 'npm:dayjs@1.11.7'
 import CodiceFiscale from 'npm:codice-fiscale-js@2.3.22'
 //import { HTTPException } from 'jsr:@hono/hono/http-exception'
+import { createClient, FunctionsHttpError } from 'jsr:@supabase/supabase-js@2'
 
 // Get the connection string from the environment variable "SUPABASE_DB_URL"
 const databaseUrl = Deno.env.get('SUPABASE_DB_URL')!
 
 const app = new Hono()
 const pool = new postgres.Pool(databaseUrl, 3, true)
+
+const supabaseClient = createClient(
+  Deno.env.get('SUPABASE_URL') ?? '',
+  Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+);
 
 app.post('/orders', async (c) => {
   const req: any = await c.req.json()
@@ -18,17 +24,17 @@ app.post('/orders', async (c) => {
   }
 
   const carnetItems = [
-    { id: '39bc184c-c9e4-4557-9fbb-40907b391b8a', event_id: '6aa979c2-622d-4d06-996a-596568e6e18d' },
-    { id: '06fc0294-c4f3-4998-ab84-5c72ba6afef2', event_id: 'b56fbb8a-5c49-4811-8bb7-b992c2544303' },
-    { id: '504e6532-09b6-4b98-9eba-20c067911915', event_id: '241de043-8f32-4d3a-b9ac-b1731fe8ce48' },
-    { id: 'dec0d443-c380-41f7-acb8-a23e696a296b', event_id: 'dbfdfef0-c7e8-4cb0-9e70-3872cdf15929' },
-    { id: '2702b42d-1986-4196-9929-e2ae19755f5e', event_id: 'b0061698-9762-4849-8ce0-d907ff1d9743' },
-    { id: '9e946616-9335-4faa-a66e-0a6344352b2b', event_id: 'c514bdcb-3ef7-4415-b5de-d4ba79aa4d52' },
-    { id: '461c382b-6f12-4799-862c-7f54730117be', event_id: 'a96a093e-56e5-40ba-be5a-8d978fb562a8' },
-    { id: '41d92792-d914-4cc6-9337-9f7dcfd5f34d', event_id: 'd1242f0d-acb6-4cc7-a268-e970cd1ac8fe' },
-    { id: '600d7cce-c9e2-4e89-8a40-9e2bca8b3622', event_id: '751be1a5-9cd9-4bab-94f8-d3d568e56187' },
-    { id: 'bc265e0f-71b4-48bd-b3b2-35c2eb9727fc', event_id: '5d2b6463-d0ea-44c9-b8ec-fdebd0e8814f' },
-    { id: '6d769257-7022-468e-a0fd-0a38cf0628c2', event_id: '94134137-72eb-4824-9144-e3ccefda50cb' },
+    { product_id: '39bc184c-c9e4-4557-9fbb-40907b391b8a', event_id: '6aa979c2-622d-4d06-996a-596568e6e18d' },
+    { product_id: '06fc0294-c4f3-4998-ab84-5c72ba6afef2', event_id: 'b56fbb8a-5c49-4811-8bb7-b992c2544303' },
+    { product_id: '504e6532-09b6-4b98-9eba-20c067911915', event_id: '241de043-8f32-4d3a-b9ac-b1731fe8ce48' },
+    { product_id: 'dec0d443-c380-41f7-acb8-a23e696a296b', event_id: 'dbfdfef0-c7e8-4cb0-9e70-3872cdf15929' },
+    { product_id: '2702b42d-1986-4196-9929-e2ae19755f5e', event_id: 'b0061698-9762-4849-8ce0-d907ff1d9743' },
+    { product_id: '9e946616-9335-4faa-a66e-0a6344352b2b', event_id: 'c514bdcb-3ef7-4415-b5de-d4ba79aa4d52' },
+    { product_id: '461c382b-6f12-4799-862c-7f54730117be', event_id: 'a96a093e-56e5-40ba-be5a-8d978fb562a8' },
+    { product_id: '41d92792-d914-4cc6-9337-9f7dcfd5f34d', event_id: 'd1242f0d-acb6-4cc7-a268-e970cd1ac8fe' },
+    { product_id: '600d7cce-c9e2-4e89-8a40-9e2bca8b3622', event_id: '751be1a5-9cd9-4bab-94f8-d3d568e56187' },
+    { product_id: 'bc265e0f-71b4-48bd-b3b2-35c2eb9727fc', event_id: '5d2b6463-d0ea-44c9-b8ec-fdebd0e8814f' },
+    { product_id: '6d769257-7022-468e-a0fd-0a38cf0628c2', event_id: '94134137-72eb-4824-9144-e3ccefda50cb' },
   ];
 
   const items = [];
@@ -49,6 +55,7 @@ app.post('/orders', async (c) => {
       )
 
       const product = rows[0]
+
       if (!product) {
         console.warn(`[createOrder] errore nella richiesta: ${JSON.stringify(req.items)}`);
         //return c.json({ message: 'Errore nella richiesta' }, { status: 500})
@@ -73,12 +80,39 @@ app.post('/orders', async (c) => {
         throw new Error('Iscrizione non disponibile')
       }
 
-      items.push({
-        ...item,
+      if (product.type === 'carnet') {
+        // recupero i sotto biglietti... TODO
+      }
+
+      let _item: any = {
+        event_id: item.event_id,
+        product_id: product.id,
+        product_type: item.product_type, // serve? per vedere che è carnet dopo
         name: product.name,
-        price: product.price,
         description: item.description ? capitalize(item.description) : null,
-      })
+        price: product.price,
+        quantity: item.quantity,
+      }
+
+      if (item.entry) {
+        const tin = verifyTin(item.entry.tin, item.entry.first_name, item.entry.last_name);
+
+        _item['entry'] = {
+          ...item.entry,
+          first_name: capitalize(item.entry.first_name),
+          last_name: capitalize(item.entry.last_name),
+          birth_date: item.entry.birth_date ??
+            `${tin.year}-${String(tin.month).padStart(2, '0')}-${String(tin.day).padStart(2, '0')}`,
+          birth_place: item.entry.birth_place ?? tin.birthplace.nome,
+          gender: (item.entry.gender ?? tin.gender).toUpperCase(),
+          country: item.entry.country ?? 'ITA',
+          tin: item.entry.tin.toUpperCase(),
+          email: item.entry.email.toLowerCase(),
+          club: item.entry.club ? item.entry.club.trim().toUpperCase() : null,
+        }
+      }
+
+      items.push(_item)
     }
 
     if (req.payment_method === 'stripe') {
@@ -88,10 +122,9 @@ app.post('/orders', async (c) => {
     const totalAmount = calcTotalAmount(items);
     const orderDate = dayjs().format();
 
-    const transaction = client.createTransaction("create_order");
-    await transaction.begin();//client.query('BEGIN');
+    client.queryObject('BEGIN');
 
-    const { rows } = await transaction.queryObject(
+    const { rows } = await client.queryObject(
       `INSERT INTO orders (user_id, date, amount, customer_email, customer_first_name, customer_last_name, payment_method, payment_status)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
       [
@@ -108,172 +141,74 @@ app.post('/orders', async (c) => {
     const order = rows[0]
     console.debug(`[createOrder] order: ${JSON.stringify(order)}`);
 
-    for (let item of items) {
-      const { rows } = await transaction.queryObject(
-        `INSERT INTO order_items (order_id, user_id, event_id, product_id, description, price, quantity, payment_method, payment_status)
-        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+
+    for (const item of items) {
+      const { rows } = await client.queryObject(
+        `INSERT INTO order_items (order_id, user_id, event_id, product_id, name, description, price, quantity, payment_method, payment_status)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
         [
           order.id,
           req.user_id ?? null,
           item.event_id,
           item.product_id,
+          item.name,
           item.description,
           item.price,
           item.quantity,
-          req.payment_method,
-          req.payment_method === 'stripe' ? 'intent' : 'pending',
+          order.payment_method,
+          order.payment_status,
         ]
       )
       const orderItem = rows[0]
-      orderItems.push(rows[0]);
+      orderItems.push(orderItem);
 
       if (item?.entry) {
-        const entry = {
-          ...item.entry,
-          first_name: capitalize(item.entry.first_name),
-          last_name: capitalize(item.entry.last_name),
-          tin: item.entry.tin.toUpperCase(),
-          email: item.entry.email.toLowerCase(),
-          club: item.entry.club ? item.entry.club.trim().toUpperCase() : null,
-        }
+        const productItems = (item.product_type === 'carnet' || item.product_id === '6561bc35-0ee0-4c25-a515-e50b43d1c95c')
+          ? carnetItems
+          : [{ product_id: item.product_id, event_id: item.event_id }]
 
-        // tarrozzata, poi rimarrà questa senza la seconda clausola
-        if (item.product_id !== '6561bc35-0ee0-4c25-a515-e50b43d1c95c') {
-          const cf = verifyTin(entry.tin, entry.first_name, entry.last_name);
-
-          const { rows: entrieRows } = await transaction.queryObject(
-            `INSERT INTO entries (order_item_id, order_id, item_id, event_id, first_name, last_name, birth_date, birth_place,
-            gender, country, club, email, phone_number, tin, fidal_card)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+        for (const row of productItems) {
+          await client.queryObject(
+            `INSERT INTO entries (order_item_id, order_id, product_id, event_id, first_name, last_name, birth_date, birth_place,
+            gender, country, club, email, phone_number, tin)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
             ON CONFLICT ON CONSTRAINT entries_unique
-            DO UPDATE SET order_item_id = excluded.order_item_id, order_id = excluded.order_id, item_id = excluded.item_id,
+            DO UPDATE SET order_item_id = excluded.order_item_id, order_id = excluded.order_id, product_id = excluded.product_id,
             first_name = excluded.first_name, last_name = excluded.last_name, birth_date = excluded.birth_date,
             birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, club = excluded.club,
-            email = excluded.email, phone_number = excluded.phone_number, fidal_card = excluded.fidal_card
+            email = excluded.email, phone_number = excluded.phone_number
             WHERE entries.event_id = excluded.event_id AND entries.tin = excluded.tin`,
             [
               orderItem.id,
               order.id,
-              item.id,
-              item.event_id,
+              row.product_id,
+              row.event_id,
               item.entry.first_name,
               item.entry.last_name,
-              item.entry.birth_date ??
-              `${cf.year}-${String(cf.month).padStart(2, '0')}-${String(cf.day).padStart(2, '0')}`,
-              item.entry.birth_place ?? cf.birthplace.nome,
-              item.entry.gender ?? cf.gender,
-              item.entry.country ?? 'ITA',
+              item.entry.birth_date,
+              item.entry.birth_place,
+              item.entry.gender,
+              item.entry.country,
               item.entry.club,
               item.entry.email,
               item.entry.phone_number,
               item.entry.tin,
-              item.entry.fidal_card,
             ]
           );
-
-          entries.push({
-            order_item_id: orderItem.id,
-            order_id: order.id,
-            item_id: item.id,
-            event_id: item.event_id,
-            first_name: item.entry.first_name,
-            last_name: item.entry.last_name,
-            birth_date:
-              item.entry.birth_date ??
-              `${cf.year}-${String(cf.month).padStart(2, '0')}-${String(cf.day).padStart(2, '0')}`,
-            birth_place: item.entry.birth_place ?? cf.birthplace.nome,
-            gender: item.entry.gender ?? cf.gender,
-            country: item.entry.country,
-            club: item.entry.club,
-            email: item.entry.email,
-            phone_number: item.entry.phone_number,
-            tin: item.entry.tin,
-            fidal_card: item.entry.fidal_card,
-          });
-        }
-
-        // tarrozzata !
-        if (item?.entry && item.product_id === '6561bc35-0ee0-4c25-a515-e50b43d1c95c') {
-          const cf = verifyTin(item.entry.tin, item.entry.first_name, item.entry.last_name);
-
-          for (let row of carnetItems) {
-            const { rows: entrieRows } = await transaction.queryObject(
-              `INSERT INTO entries (order_item_id, order_id, item_id, event_id, first_name, last_name, birth_date, birth_place,
-              gender, country, club, email, phone_number, tin)
-              VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
-              ON CONFLICT ON CONSTRAINT entries_unique
-              DO UPDATE SET order_item_id = excluded.order_item_id, order_id = excluded.order_id, item_id = excluded.item_id,
-              first_name = excluded.first_name, last_name = excluded.last_name, birth_date = excluded.birth_date,
-              birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, club = excluded.club,
-              email = excluded.email, phone_number = excluded.phone_number
-              WHERE entries.event_id = excluded.event_id AND entries.tin = excluded.tin`,
-              [
-                orderItem.id,
-                order.id,
-                row.id,
-                row.event_id,
-                item.entry.first_name,
-                item.entry.last_name,
-                item.entry.birth_date ??
-                `${cf.year}-${String(cf.month).padStart(2, '0')}-${String(cf.day).padStart(2, '0')}`,
-                item.entry.birth_place ?? cf.birthplace.nome,
-                item.entry.gender ?? cf.gender,
-                item.entry.country,
-                item.entry.club,
-                item.entry.email,
-                item.entry.phone_number,
-                item.entry.tin,
-              ]
-            );
-
-            //orderItems[count - 1].entry = entrieRows[0];
-            entries.push({
-              order_item_id: orderItem.id,
-              order_id: order.id,
-              item_id: row.id,
-              event_id: row.event_id,
-              first_name: item.entry.first_name,
-              last_name: item.entry.last_name,
-              birth_date:
-                item.entry.birth_date ??
-                `${cf.year}-${String(cf.month).padStart(2, '0')}-${String(cf.day).padStart(2, '0')}`,
-              birth_place: item.entry.birth_place ?? cf.birthplace.nome,
-              gender: item.entry.gender ?? cf.gender,
-              country: item.entry.country,
-              club: item.entry.club,
-              email: item.entry.email,
-              phone_number: item.entry.phone_number,
-              tin: item.entry.tin,
-            });
-          }
         }
       }
     }
 
-    //await connection.query('COMMIT');
-    await transaction.commit()//.query('COMMIT');
+    await client.queryObject('COMMIT');
     return c.json({ ...order, items: orderItems })
   } catch (e: any) {
-    console.error("catch", e.message)
-
-    //await transaction.rollback()
-    //await connection.query('ROLLBACK');
-    console.warn(`[createOrder] Errore ${e.code}: ${e.message}`);
-
-    if (e.code === '23505') {
-      if (e.constraint === 'entries_unique') {
-        console.warn(`[createOrder] non dovrebbe più capitare: ${JSON.stringify(e.message)}`);
-        const lastEntry = orderItems.pop();
-        throw new Error(`${lastEntry?.description} risulta già iscritto`);
-      }
-    }
-
-    throw new Error(e.message);
+    await client.queryObject('ROLLBACK');
+    throw e;
   } finally {
     client.release();
   }
 } catch (e: any) {
-  console.error('outer error', e.message)
+  console.warn(`[createOrder] Errore ${e.code}: ${e.message}`);
   return c.json({ message: e.message }, { status: 500})
 }
 });
