@@ -5,6 +5,7 @@ import getStripe from './stripe';
 //import { Order, OrderItem } from '@/types/orders';
 import { redirect } from 'next/navigation'
 import { createClient } from './supabase/server';
+import { FunctionsHttpError } from '@supabase/supabase-js';
 //import { base64 } from './helpers';
 
 // https://supabase.github.io/wrappers/stripe/
@@ -19,39 +20,24 @@ export async function createCheckout(orderData: any) {//Checkout) {
     body: orderData
   })
 
-  if (error) {
-    console.log(error)
-  } else {
-    console.log(data)
-  }
-  
-
-  /*const response = await fetch('/api/checkout', {
-    method: 'POST',
-    body: JSON.stringify(orderData),
-    headers: {
-      'content-type': 'application/json',
-      'cancel_url': '',
-    },
-    cache: 'no-cache',
-  });
-  const body = await response.json();*/
-
-  /*if (response.status === 500) {
-    throw new Error(body.error);
+  if (error instanceof FunctionsHttpError) {
+    const { message } = await error.context.json()
+    throw new Error(message)
+  } else if (error) {
+    throw new Error(error.message)
   }
 
-  if (body.payment_method === 'stripe') {
-    const stripe = await getStripe(body.stripeAccount);
+  if (orderData.payment_method === 'stripe') {
+    const stripe = await getStripe();
 
     try {
       await stripe!.redirectToCheckout({
-        sessionId: body.checkoutSessionId,
+        sessionId: data.checkoutSessionId,
       });
     } catch (e: any) {
       console.error(e.message);
     }
   } else {
-    return body;
-  }*/
+    return data;
+  }
 }

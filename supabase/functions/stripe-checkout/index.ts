@@ -66,7 +66,9 @@ app.post('/stripe-checkout', async (c) => {
 
   console.log(params)
 
-  return stripe.checkout.sessions.create(params);
+  const session = await stripe.checkout.sessions.create(params);
+  return c.json(session)
+
   } catch (e: any) {
     console.error(`[checkout] error: ${e.message}`);
     return c.json({ error: e.message }, 500)
