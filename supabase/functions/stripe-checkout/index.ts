@@ -51,12 +51,10 @@ app.post('/stripe-checkout', async (c) => {
     },
     metadata: {
       order_id: order.id,
-      //event_id: order.items[0].event_id ?? '',
     },
     payment_intent_data: {
       metadata: {
         order_id: order.id,
-        //event_id: order.items[0].event_id ?? '',
       },
     },
     success_url: `${origin}/checkout/confirm?session_id={CHECKOUT_SESSION_ID}&q=${q}`,
