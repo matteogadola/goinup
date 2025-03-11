@@ -79,6 +79,7 @@ export async function POST(req: Request) {
       if (session.payment_intent && !isNaN(order_id)) {
         const order = await getOrder(order_id);
 
+        console.log(order)
         if (order === null) {
           console.error(`Checkout completed in errore durante il recupero dell'ordine: ${JSON.stringify(session)}`);
           return new Response(``, {
