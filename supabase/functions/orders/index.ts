@@ -16,6 +16,99 @@ const supabaseClient = createClient(
   Deno.env.get('SUPABASE_ANON_KEY') ?? '',
 );
 
+
+app.get('/orders', async (c) => {
+  const req: any = await c.req.json()
+
+  if (!req.order_id) {
+    return c.json({ message: 'manca order_id' }, { status: 500})
+  }
+
+  try {
+    const client = await pool.connect();
+
+    try {
+      const { rows } = await client.queryObject(
+        `SELECT * FROM orders WHERE id = $1`,
+        [
+          req.order_id,
+        ]
+      )
+    const order = rows[0]
+    console.debug(`[createOrder] order: ${JSON.stringify(order)}`);
+
+
+    for (const item of items) {
+      const { rows } = await client.queryObject(
+        `INSERT INTO order_items (order_id, user_id, event_id, product_id, name, description, price, quantity, payment_method, payment_status)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+        [
+          order.id,
+          req.user_id || null,
+          item.event_id,
+          item.product_id,
+          item.name,
+          item.description,
+          item.price,
+          item.quantity,
+          order.payment_method,
+          order.payment_status,
+        ]
+      )
+      const orderItem = rows[0]
+      orderItems.push(orderItem);
+
+      if (item?.entry && Object.keys(item.entry).length) {
+        const productItems = (item.product_type === 'carnet' || item.product_id === '6561bc35-0ee0-4c25-a515-e50b43d1c95c')
+          ? carnetItems
+          : [{ product_id: item.product_id, event_id: item.event_id }]
+
+        for (const row of productItems) {
+          await client.queryObject(
+            `INSERT INTO entries (order_item_id, order_id, product_id, event_id, first_name, last_name, birth_date, birth_place,
+            gender, country, club, email, phone_number, tin)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+            ON CONFLICT ON CONSTRAINT entries_unique
+            DO UPDATE SET order_item_id = excluded.order_item_id, order_id = excluded.order_id, product_id = excluded.product_id,
+            first_name = excluded.first_name, last_name = excluded.last_name, birth_date = excluded.birth_date,
+            birth_place = excluded.birth_place, gender = excluded.gender, country = excluded.country, club = excluded.club,
+            email = excluded.email, phone_number = excluded.phone_number
+            WHERE entries.event_id = excluded.event_id AND entries.tin = excluded.tin`,
+            [
+              orderItem.id,
+              order.id,
+              row.product_id,
+              row.event_id,
+              item.entry.first_name,
+              item.entry.last_name,
+              item.entry.birth_date,
+              item.entry.birth_place,
+              item.entry.gender,
+              item.entry.country,
+              item.entry.club,
+              item.entry.email,
+              item.entry.phone_number,
+              item.entry.tin,
+            ]
+          );
+        }
+      }
+    }
+
+    await client.queryObject('COMMIT');
+    return c.json({ ...order, items: orderItems })
+  } catch (e: any) {
+    await client.queryObject('ROLLBACK');
+    throw e;
+  } finally {
+    client.release();
+  }
+} catch (e: any) {
+  console.warn(`[createOrder] Errore ${e.code}: ${e.message}`);
+  return c.json({ message: e.message }, { status: 500})
+}
+});
+
 app.post('/orders', async (c) => {
   const req: any = await c.req.json()
 

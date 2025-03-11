@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS entries (
 
   first_name text not null,
   last_name text not null,
-  birth_date text not null,
+  birth_date timestamp not null,
   birth_place text,
   gender gender,
   tin text,
