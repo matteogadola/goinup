@@ -4,15 +4,17 @@ import Stripe from 'stripe';
 import { getOrder, updateOrder } from '@api/orders';
 import { dt } from '@utils/date';
 
-// https://stripe.com/docs/api/versioning
-// Handle the event - https://stripe.com/docs/api/events/types
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
-});
+
 
 export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
+  // https://stripe.com/docs/api/versioning
+  // Handle the event - https://stripe.com/docs/api/events/types
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2025-02-24.acacia',
+  });
+
   const buf = await buffer(req);
   const signature = req.headers['stripe-signature']!;
   let receivedEvent
