@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import { getOrder, updateOrder } from '@api/orders';
-import { dt } from '@utils/date';
+//import { getOrder, updateOrder } from '@api/orders';
 
 
 
@@ -82,12 +81,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       //const order = JSON.parse(base64.encode(session.metadata?.q)) as Order;
 
       if (session.payment_intent && !isNaN(order_id)) {
-        const order = await getOrder(order_id);
+        /*const order = await getOrder(order_id);
 
         if (order === null) {
           console.error(`Checkout completed in errore durante il recupero dell'ordine: ${JSON.stringify(session)}`);
           return res.status(500).send('');
-        }
+        }*/
 
         // verifica che session.payment_status === 'paid' ? 'paid' : 'awaiting',
         /*await updateOrder(order_id, {
