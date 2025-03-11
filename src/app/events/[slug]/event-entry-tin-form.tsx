@@ -57,8 +57,6 @@ export default function EventEntryTinForm({ form: outerForm, onClose }: { form: 
 
   const [error, setError] = useState<string | null>(null)
   const values: any = useMemo(() => outerForm.getValues(), [outerForm])
-  //const values = form.getValues()
-  console.log("ah ok", values)
 
   const form = useForm({
     mode: 'uncontrolled',

@@ -1,9 +1,10 @@
 import { Metadata, NextPage } from 'next'
 import Image from 'next/image'
 import { redirect, useSearchParams } from 'next/navigation'
-import { base64 } from '@utils/text'
+import { decodeBase64 } from '@utils/encoding'
 //import { useCartStore } from '@store/cart';
 import { useEffect } from 'react';
+import DaEliminare from './da-eliminare';
 /*
 interface SearchParams {
   session_id?: string;
@@ -15,7 +16,7 @@ interface Props {
 }*/
 
 export default function CheckoutConfirmPage({ searchParams }: any) {
-  const order = base64.decode<any>(searchParams.q);
+  const order = decodeBase64<any>(searchParams.q);
   console.log(order)
   const detail = <></>
 
@@ -83,6 +84,7 @@ export default function CheckoutConfirmPage({ searchParams }: any) {
             .</p>
         </div>
       </section>
+      <DaEliminare />
     </>
   )
 }

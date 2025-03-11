@@ -91,7 +91,6 @@ export default function EventEntryForm({ event, product }: { event: any, product
       throw new Error(error.message)
     }
 
-    console.log(data)
     return data
   }
 
@@ -142,6 +141,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
     })
 
     form.reset()
+    return true
   }
 
   const onSave = async () => {
@@ -165,26 +165,11 @@ export default function EventEntryForm({ event, product }: { event: any, product
   const onSubmit = async () => {
     const data = form.getValues()
 
-    if (items.length === 0 || form.isValid()) {
-      await save(data)
-
-      const items = useCartStore.getState().items
-      if (items.length) {
-        router.push('/checkout')
-      }
-    } else {
-      //if (form.validate().hasErrors) return;
-      //router.push('/checkout')
-
-      if (form.isTouched()) {
-        console.log('submit è toccato')
-        if (form.validate().hasErrors) return;
-      }
-      if (form.isDirty()) {
-        console.log('submit è sporco')
-        if (form.validate().hasErrors) return;
-      }
-      
+    if (await save(data)) {
+      router.push('/checkout')
+    } else if (!form.isDirty()) {
+      form.clearErrors()
+      router.push('/checkout')
     }
   }
 
