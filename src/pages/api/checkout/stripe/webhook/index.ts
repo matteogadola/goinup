@@ -81,12 +81,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       //const order = JSON.parse(base64.encode(session.metadata?.q)) as Order;
 
       if (session.payment_intent && !isNaN(order_id)) {
-        /*const order = await getOrder(order_id);
+        const order = await getOrder(order_id);
 
         if (order === null) {
           console.error(`Checkout completed in errore durante il recupero dell'ordine: ${JSON.stringify(session)}`);
           return res.status(500).send('');
-        }*/
+        }
 
         // verifica che session.payment_status === 'paid' ? 'paid' : 'awaiting',
         /*await updateOrder(order_id, {
@@ -106,6 +106,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
   res.status(200).send('');
 }
+
+import { createClient } from "@utils/supabase/server";
+import { Order, OrderItem } from '@d/orders'
+
+export const getOrder = async (id: number) => {
+  const supabase = await createClient()
+
+  const { data } = await supabase.from('orders').select().eq('id', id).returns<Order[]>().single();
+
+  if (data !== null) {
+    const { data: items } = await supabase.from('order_items').select().eq('order_id', id).returns<OrderItem[]>();
+    data.items = items ?? [];
+  }
+
+  return data;
+};
 
 /*
 SE TUTTO VA BENE (4242 4242 4242 4242)
