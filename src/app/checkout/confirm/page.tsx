@@ -14,7 +14,7 @@ interface Props {
 
 export default function CheckoutConfirmPage({ searchParams }: any) {
   const order = base64.decode<any>(searchParams.q);
-  
+  console.log(order)
   const detail = <></>
 
   if (order?.items === undefined || !order.items.length) {
