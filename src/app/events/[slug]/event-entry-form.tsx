@@ -77,7 +77,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
   const entryExist = async (event_id: string, tin: string) => {
     // da server...
     const { data, error } = await supabase.rpc('entry_exist', {
-      event_id: event.id,
+      event_id: event._id,
       _tin: tin,
       //_first_name: entry.first_name,
       //_last_name: entry.last_name,
@@ -130,7 +130,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
       price: product.price,
       quantity: 1,
       payment_methods: product.payment_methods,
-      event_id: event.id,
+      event_id: event._id,
       entry: {
         ...data,
         first_name: capitalize(data.first_name),
