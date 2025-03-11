@@ -1,5 +1,6 @@
 import { createClient } from './server'
 import clubs from '../data/names.json'
+import { Order, OrderItem } from '@d/orders'
 
 const supabase = await createClient()
 
@@ -30,7 +31,7 @@ export const getOrders = async () => {
 };
 
 export const getOrder = async (id: number) => {
-  const { data } = await supabase.from('orders').select().eq('id', id).returns<any[]>().single();
+  const { data } = await supabase.from('orders').select().eq('id', id).returns<Order[]>().single();
 
   if (data !== null) {
     const { data: items } = await supabase.from('order_items').select().eq('order_id', id).returns<OrderItem[]>();
