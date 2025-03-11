@@ -24,6 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       process.env.STRIPE_WEBHOOK_SECRET!
     )
   } catch (e: any) {
+    console.error(`Webhook Error: ${e.message}`)
     return res.status(400).send(`Webhook Error: ${e.message}`);
   }
 
