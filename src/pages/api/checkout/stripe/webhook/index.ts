@@ -43,11 +43,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       console.warn(`Pagamento fallito per ${order_id}`);
 
       if (payment.id && !isNaN(order_id)) {
-        await updateOrder(order_id, {
+        /*await updateOrder(order_id, {
           payment_id: payment.id,
           payment_status: 'failed',
           payment_date: dt.unix(payment.created).utc().format(),
-        });
+        });*/
 
         /*await deleteEntries(order_id, {
           payment_id: payment.id,
@@ -64,11 +64,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       console.info(`Checkout expired per ${order_id}`);
 
       if (sessionExp.payment_intent && !isNaN(order_id)) {
-        await updateOrder(order_id, {
+        /*await updateOrder(order_id, {
           payment_id: sessionExp.payment_intent as string,
           payment_status: 'failed',
           payment_date: dt.unix(sessionExp.created).utc().format(),
-        });
+        });*/
       }
       break;
     case 'checkout.session.completed':
@@ -88,12 +88,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
 
         // verifica che session.payment_status === 'paid' ? 'paid' : 'awaiting',
-        await updateOrder(order_id, {
+        /*await updateOrder(order_id, {
           status: 'confirmed',
           payment_id: session.payment_intent as string,
           payment_status: 'paid',
           payment_date: dt.unix(session.created).utc().format(),
-        });
+        });*/
         //await sendConfirmationMail(order);
       } else {
         console.error(`Checkout completed terminato in errore: ${JSON.stringify(session)}`);
