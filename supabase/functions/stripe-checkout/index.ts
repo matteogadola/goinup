@@ -12,7 +12,7 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'), {
 });
 
 app.post('/stripe-checkout', async (c) => {
-  const { headers, order } = await c.req.json()
+  const { order, origin, q } = await c.req.json()
   // const { method, headers, body } = req;
   console.log(order)
   // const { id } = await createCheckoutSession(headers, body);
@@ -38,8 +38,7 @@ app.post('/stripe-checkout', async (c) => {
       });
     }
 
-  const origin = 'https://goinupvertical-git-v10-shadowf4xs-projects.vercel.app'
-  const q = encodeBase64(JSON.stringify(order));
+  //const q = encodeBase64(JSON.stringify(order));
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: 'payment',
     submit_type: 'pay',

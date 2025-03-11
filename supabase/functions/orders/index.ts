@@ -94,18 +94,18 @@ app.post('/orders', async (c) => {
         quantity: item.quantity,
       }
 
-      if (item.entry) {
+      if (item?.entry && Object.keys(item.entry).length) {
         const tin = verifyTin(item.entry.tin, item.entry.first_name, item.entry.last_name);
 
         _item['entry'] = {
           ...item.entry,
           first_name: capitalize(item.entry.first_name),
           last_name: capitalize(item.entry.last_name),
-          birth_date: item.entry.birth_date ??
+          birth_date: item.entry.birth_date ||
             `${tin.year}-${String(tin.month).padStart(2, '0')}-${String(tin.day).padStart(2, '0')}`,
-          birth_place: item.entry.birth_place ?? tin.birthplace.nome,
-          gender: tin.gender,
-          country: item.entry.country ?? 'ITA',
+          birth_place: item.entry.birth_place || tin.birthplace.nome,
+          gender: item.entry.gender || tin.gender,
+          country: item.entry.country || 'ITA',
           tin: item.entry.tin.toUpperCase(),
           email: item.entry.email.toLowerCase(),
           club: item.entry.club ? item.entry.club.trim().toUpperCase() : null,
@@ -128,7 +128,7 @@ app.post('/orders', async (c) => {
       `INSERT INTO orders (user_id, date, amount, customer_email, customer_first_name, customer_last_name, payment_method, payment_status)
       VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
       [
-        req.user_id ?? null,
+        req.user_id || null,
         orderDate,
         totalAmount,
         req.customer_email,
@@ -148,7 +148,7 @@ app.post('/orders', async (c) => {
         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
         [
           order.id,
-          req.user_id ?? null,
+          req.user_id || null,
           item.event_id,
           item.product_id,
           item.name,
@@ -162,7 +162,7 @@ app.post('/orders', async (c) => {
       const orderItem = rows[0]
       orderItems.push(orderItem);
 
-      if (item?.entry) {
+      if (item?.entry && Object.keys(item.entry).length) {
         const productItems = (item.product_type === 'carnet' || item.product_id === '6561bc35-0ee0-4c25-a515-e50b43d1c95c')
           ? carnetItems
           : [{ product_id: item.product_id, event_id: item.event_id }]

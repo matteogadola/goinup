@@ -6,7 +6,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from './supabase/server';
 import { FunctionsHttpError } from '@supabase/supabase-js';
-//import { base64 } from './helpers';
+import { base64 } from './text';
 
 // https://supabase.github.io/wrappers/stripe/
 
@@ -27,10 +27,5 @@ export async function createCheckout(orderData: any) {//Checkout) {
     throw new Error(error.message)
   }
 
-  if (orderData.payment_method === 'stripe') {
-    redirect(data.checkoutSessionUrl)
-  } else {
-    // push to confirm?
-    return data;
-  }
+  redirect(data.checkoutSessionUrl)
 }
