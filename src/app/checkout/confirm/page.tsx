@@ -2,6 +2,8 @@ import { Metadata, NextPage } from 'next'
 import Image from 'next/image'
 import { redirect, useSearchParams } from 'next/navigation'
 import { base64 } from '@utils/text'
+import { useCartStore } from '@store/cart';
+import { useEffect } from 'react';
 /*
 interface SearchParams {
   session_id?: string;
@@ -16,6 +18,8 @@ export default function CheckoutConfirmPage({ searchParams }: any) {
   const order = base64.decode<any>(searchParams.q);
   console.log(order)
   const detail = <></>
+
+  useEffect(() => useCartStore.setState({ items: [] }), [])
 
   if (order?.items === undefined || !order.items.length) {
     return (
