@@ -2,7 +2,7 @@ import { Metadata, NextPage } from 'next'
 import Image from 'next/image'
 import { redirect, useSearchParams } from 'next/navigation'
 import { base64 } from '@utils/text'
-
+/*
 interface SearchParams {
   session_id?: string;
   q: string;
@@ -10,9 +10,9 @@ interface SearchParams {
 
 interface Props {
   searchParams: SearchParams;
-}
+}*/
 
-export default function CheckoutConfirmPage({ searchParams }: Props) {
+export default function CheckoutConfirmPage({ searchParams }: any) {
   const order = base64.decode<any>(searchParams.q);
   
   const detail = <></>
