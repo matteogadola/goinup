@@ -50,16 +50,16 @@ app.post('/orders', async (c) => {
     // "verifico" che item non sia manipolato
     for (let item of req.items) {
       const { rows } = await client.queryObject(
-        `SELECT * FROM products WHERE id = $1 AND name = $2 AND price = $3`,
-        [item.product_id, item.product_name, item.price]
+        `SELECT * FROM products WHERE id = $1`,
+        [item.product_id]
       )
 
       const product = rows[0]
 
       if (!product) {
-        console.warn(`[createOrder] errore nella richiesta: ${JSON.stringify(req.items)}`);
+        console.warn(`[createOrder] Prodotto non trovato: ${JSON.stringify(req.items)}`);
         //return c.json({ message: 'Errore nella richiesta' }, { status: 500})
-        throw new Error('Errore nella richiesta')
+        throw new Error('Prodotto non trovato')
       }
 
       if (product.status !== 'open') {
@@ -104,7 +104,7 @@ app.post('/orders', async (c) => {
           birth_date: item.entry.birth_date ??
             `${tin.year}-${String(tin.month).padStart(2, '0')}-${String(tin.day).padStart(2, '0')}`,
           birth_place: item.entry.birth_place ?? tin.birthplace.nome,
-          gender: (item.entry.gender ?? tin.gender).toUpperCase(),
+          gender: tin.gender,
           country: item.entry.country ?? 'ITA',
           tin: item.entry.tin.toUpperCase(),
           email: item.entry.email.toLowerCase(),

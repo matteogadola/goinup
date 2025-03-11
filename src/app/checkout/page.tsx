@@ -5,6 +5,7 @@ import Credits from '@components/credits'
 import UpcomingEvents from '@components/events/upcoming'
 import BannerCarnet from '@components/home/banner-carnet';
 import { useCartStore } from '@store/cart';
+import { createCheckout } from '@utils/checkout';
 import { dt } from '@utils/date';
 import { urlFor } from '@utils/sanity';
 import { getSeries, getUpcomingEvents } from '@utils/sanity/queries'
@@ -26,8 +27,8 @@ export default function CheckoutPage() {
   };
 
   //import { createCheckout } from '@/lib/checkout'
-  const createCheckout = (lolle: any) => {}
-
+  //const createCheckout = (lolle: any) => {}
+  console.log(items)
   const openLocations = () => {}
 
   const checkout = async () => {
@@ -195,6 +196,11 @@ export default function CheckoutPage() {
 
             </div>
           </div>
+      }
+      {!items.length &&
+        <div className="">
+          Nessun elemento nel carrello
+        </div>
       }
     </section>
     </>

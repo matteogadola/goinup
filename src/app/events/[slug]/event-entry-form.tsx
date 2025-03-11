@@ -15,6 +15,9 @@ import { useCartStore } from "@store/cart";
 import { EntryForm } from "@d/entries";
 import { useRouter } from "next/navigation";
 import { capitalize } from "@utils/text";
+import { FunctionsHttpError } from "@supabase/supabase-js";
+import { subscribeWithSelector } from 'zustand/middleware'
+import { isTinValid, verifyTin } from "@utils/tin";
 
 /**
  * questa è la parte in cui in una sorta di card vengono mostrati:
@@ -44,7 +47,6 @@ export default function EventEntryForm({ event, product }: { event: any, product
 
   const form = useForm({
     mode: 'uncontrolled',
-    //onSubmitPreventDefault: 'always',
     initialValues: {
       first_name: '',
       last_name: '',
@@ -60,63 +62,43 @@ export default function EventEntryForm({ event, product }: { event: any, product
       first_name: isNotEmpty('Inserisci il nome'),
       last_name: isNotEmpty('Inserisci il cognome'),
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Indirizzo mail non valido'),
-      tin: (value) => (/^(?:[A-Z][AEIOU][AEIOUX]|[AEIOU]X{2}|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[15MR][\dLMNP-V]|[26NS][0-8LMNP-U])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM]|[AC-EHLMPR-T][26NS][9V])|(?:[02468LNQSU][048LQU]|[13579MPRTV][26NS])B[26NS][9V])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[1-9MNP-V][\dLMNP-V]|[0L][1-9MNP-V]))[A-Z]$/i.test(value) ? null : 'Codice fiscale non valido')
+      tin: (value) => isTinValid(value)
     },
-    transformValues: (values) => ({
+    /*transformValues: (values) => ({
       first_name: capitalize(values.first_name),
       last_name: capitalize(values.last_name),
       tin: values.tin.toUpperCase(),
       email: values.email.toLowerCase(),
-      //description: `${values.first_name} ${values.last_name}`,
+      description: capitalize(`${values.first_name} ${values.last_name}`),
       //age: Number(values.age) || 0,
-    }),
+    }),*/
   });
-/*
-  const preventDuplicate = () => {
-    supabase.rpc()
 
-
-    SELECT *
-  FROM entries
-  INNER JOIN orders ON entries.order_id = orders.id
-  WHERE (orders.payment_status = 'paid' OR (orders.payment_method = 'cash' AND orders.payment_status = 'pending'))
-  AND entries.event_id = NEW.event_id AND tin = NEW.tin
-  INTO item;
-  
-  IF FOUND THEN
-    IF NEW.gender = 'F' THEN
-      gender := 'iscritta';
-    ELSE
-      gender := 'iscritto';
-    END IF;
-    RAISE EXCEPTION '% % risulta già %', NEW.first_name, NEW.last_name, gender;
-  END IF;
-  }
-*/
-
-  const entryExist = async (entry: any) => {
-    const { data, error } = await supabase.rpc('entry_prevent_duplicate', {
-      _tin: entry.tin,
-      _first_name: entry.first_name,
-      _last_name: entry.last_name,
-      _birth_year: dt(entry.birth_date).year()
+  const entryExist = async (event_id: string, tin: string) => {
+    // da server...
+    const { data, error } = await supabase.rpc('entry_exist', {
+      event_id: event.id,
+      _tin: tin,
+      //_first_name: entry.first_name,
+      //_last_name: entry.last_name,
+      //_birth_year: dt(entry.birth_date).year()
     })
 
-    if (error) throw new Error(error.message)
+    if (error instanceof FunctionsHttpError) {
+      const { message } = await error.context.json()
+      throw new Error(message)
+    } else if (error) {
+      throw new Error(error.message)
+    }
 
+    console.log(data)
     return data
   }
 
-  const onSave = async () => {
-
+  const save = async (data: any) => {
     if (form.validate().hasErrors) return;
-    console.log("supero")
-
-    const data = form.getValues()
-    console.log("save", data)
 
     const { data: { user }, error } = await supabase.auth.getUser()
-    console.log("auth", user?.id)
 
     // ATTENZIONE PERCHE NON SEMPRE C'è TIN eh
     if (items.find(item => item.entry?.tin === data.tin)) {
@@ -124,73 +106,78 @@ export default function EventEntryForm({ event, product }: { event: any, product
       return
     }
 
-    // chiamata a db in cerca
+    try {
+      verifyTin(data.tin, data.first_name, data.last_name)
+    } catch(e: any) {
+      form.setFieldError('tin', e.message);
+      return
+    }
+
+    /*try {
+      if (await entryExist(event.id, data.tin)) {
+        // anche in questo caso meglio mostra errore generale?
+        form.setFieldError('tin', 'Codice fiscale già iscritto alla gara');
+        return
+      }
+    } catch(e: any) {
+      // mostra errore
+    }*/
 
     addItem({
-      product_id: product.id,
+      product_id: product._id,
       product_name: product.name,
-      description: `${data.first_name} ${data.last_name}`,
+      description: capitalize(`${data.first_name} ${data.last_name}`),
       price: product.price,
       quantity: 1,
       payment_methods: product.payment_methods,
       event_id: event.id,
-      entry: data,
+      entry: {
+        ...data,
+        first_name: capitalize(data.first_name),
+        last_name: capitalize(data.last_name),
+        tin: data.tin.toUpperCase(),
+        email: data.email.toLowerCase(),
+      },
     })
 
     form.reset()
+  }
 
-    // questa parte per submit non andrebbe fatta
+  const onSave = async () => {
+    const data = form.getValues()
+
+    await save(data)
+    /*const items = useCartStore.getState().items
+
     if (items.length) {
-      if (items.every((v: any) => v.entry.email === data.email)) {
-        //form.setFieldValue('email', data.email)
+      console.log('dentro')
+      if (items.every((v: any) => v.entry.email && v.entry.email === data.email)) {
+        form.setFieldValue('email', data.email)
       }
-      if (items.every((v: any) => v.entry.phone_number === data.phone_number)) {
-        //form.setFieldValue('phone_number', data.phone_number)
+      if (items.every((v: any) => v.entry.phone_number && v.entry.phone_number === data.phone_number)) {
+        form.setFieldValue('phone_number', data.phone_number)
       }
-    }
+    }*/
   }
 
   // da rivedere
-  const onSubmit = (data: any) => {
+  const onSubmit = async () => {
+    const data = form.getValues()
+
     if (items.length === 0 || form.isValid()) {
-      console.log('submit è salvo')
-      onSave()
+      await save(data)
+      router.push('/checkout')
     } else {
       if (form.isTouched()) {
         console.log('submit è toccato')
+        if (form.validate().hasErrors) return;
       }
       if (form.isDirty()) {
         console.log('submit è sporco')
+        if (form.validate().hasErrors) return;
       }
+      router.push('/checkout')
     }
-
-    console.log('vado al checkout')
-    //if (items.length) {
-      //router.push('/checkout')
-    //}
-    
-    /*if (!form.isDirty()) {
-      console.log('però non è dirty')
-    }
-      if (form.isValid())
-      form.isDirty();
-      if (!form.isValid()) {
-
-      }*/
-
-
-
-    /*setCart([...cart, {
-      id: product.id,
-      event_id: event.id,
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-      description: `${data.first_name} ${data.last_name}`,
-      entry: data,
-    }])*/
-
-    //form.reset()
   }
 
   return (

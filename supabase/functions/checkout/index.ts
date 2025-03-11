@@ -43,7 +43,7 @@ app.post('/checkout', async (c) => {
     } else if (order.payment_method === 'stripe') {
       //const stripeAccount = Deno.env.get('SUPABASE_URL')
       //const stripeAccount = (await getPromoter(order.promoter_id!))?.stripe_account ?? undefined;
-      const { data: id, error } = await supabaseClient.functions.invoke('stripe-checkout', {
+      const { data, error } = await supabaseClient.functions.invoke('stripe-checkout', {
         method: 'POST',
         body: { headers, order }
       })
@@ -55,7 +55,7 @@ app.post('/checkout', async (c) => {
         throw new Error(error.message)
       }
       //const { id } = await createCheckoutSession(headers, order, stripeAccount);
-      return c.json({ ...order, checkoutSessionId: id })
+      return c.json({ ...order, checkoutSessionId: data.id, checkoutSessionUrl: data.url })
     } else {
       throw new Error('Metodo di pagamento non supportato');
     }

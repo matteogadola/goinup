@@ -49,7 +49,6 @@ export interface Item {
 // separati o uniti???
 
 export const useCartStore = create<CartStore>((set) => ({
-  //order: null,
   items: [],
   paymentMethod: 'stripe',
   addItem: (item) => set((state) => ({ items: [...state.items, item] })),

@@ -1,9 +1,9 @@
 'use server'
 
 //import Stripe from 'stripe';
-import getStripe from './stripe';
+//import { getStripe } from './stripe';
 //import { Order, OrderItem } from '@/types/orders';
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { createClient } from './supabase/server';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 //import { base64 } from './helpers';
@@ -14,6 +14,7 @@ import { FunctionsHttpError } from '@supabase/supabase-js';
 
 export async function createCheckout(orderData: any) {//Checkout) {
   const supabase = await createClient()
+  const router = useRouter()
 
   const { data, error } = await supabase.functions.invoke('checkout', {
     method: 'POST',
@@ -28,16 +29,9 @@ export async function createCheckout(orderData: any) {//Checkout) {
   }
 
   if (orderData.payment_method === 'stripe') {
-    const stripe = await getStripe();
-
-    try {
-      await stripe!.redirectToCheckout({
-        sessionId: data.checkoutSessionId,
-      });
-    } catch (e: any) {
-      console.error(e.message);
-    }
+    router.push(data.checkoutSessionUrl)
   } else {
+    // push to confirm?
     return data;
   }
 }

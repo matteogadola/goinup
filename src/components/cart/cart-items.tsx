@@ -15,7 +15,7 @@ export default function CartItems({ className }: any) {
   const { items, removeItem } = useCartStore();
 
   return (
-    <>
+    <div className={clsx(className)}>
       {!!items.length &&
         <div className="flex h-full flex-col">
           <div className="">
@@ -36,9 +36,9 @@ export default function CartItems({ className }: any) {
                             <div className="flex justify-between text-base text-gray-900">
                               <p className="mt-1 text-sm text-gray-500">{item.description}</p>
                               <div className="flex">
-                                <UnstyledButton className="hidden md:flex" onClick={() => removeItem(index)}>
+                                <button type="button" className="hidden md:flex" onClick={() => removeItem(index)}>
                                   Rimuovi
-                                </UnstyledButton>
+                                </button>
                               </div>
                               
                             </div>
@@ -71,7 +71,7 @@ export default function CartItems({ className }: any) {
           Nessun elemento nel carrello
         </div>
       }
-    </>
+    </div>
   );
 
 

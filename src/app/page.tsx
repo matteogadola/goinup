@@ -10,11 +10,42 @@ export default async function Home() {
   const upcomingEvents = await getUpcomingEvents();
   const serie = (await getSeries({ year: 2025 }))?.[0];
 
-  console.log(upcomingEvents)
-
   return (
     <>
-    <div className="flex justify-center items-center space-x-12 mt-8">
+
+    <div className="grid grid-cols-1 lg:grid-cols-2">
+
+      <div className="flex lg:hidden items-start pb-16">
+        <div className="shadow-lg">
+          <FadeUpAnimation>
+            <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-60" />
+          </FadeUpAnimation>
+        </div>
+      </div>
+
+      <div>
+        <div className="flex flex-col pl-4 space-y-2 lg:mt-20">
+          <h3 className="text-lg text-gray-600">10 gare vertical di montagna</h3>
+          <h1 className="mt-2 text-3xl">Circuito a finalità <span className="px-1 bg-yellow-200">benefica</span></h1>
+          <h2 className="mt-2 text-xl"><span className="px-1 bg-blue-200">GOinUP</span> è un gruppo di associazioni che coordina e promuove l&apos;omonimo circuito di gare di montagna. Il nostro obbiettivo è quello di riuscire a donare il maggior numero di attrezzature e servizi a diverse associazioni benefiche nel mandamento di Morbegno</h2>
+          </div>
+      </div>
+
+      <div className="hidden lg:flex lg:flex-col items-start">
+        <div className="shadow-lg ">
+          <FadeUpAnimation>
+            <img src="/images/homepage/lino.jpg" alt="Header image" className="grayscale-50" width={400} />
+          </FadeUpAnimation>
+        </div>
+        <div className="relative z-10 left-10 -top-7 shadow-lg">
+          <FadeUpAnimation>
+            <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-50" width={500} />
+          </FadeUpAnimation>
+        </div>
+      </div>
+    </div>
+
+  {/*<div className="flex justify-center items-center space-x-12 mt-8">
       <div className="flex flex-col lg:w-1/3 space-y-2 lg:-mt-20">
           <h3 className="text-lg text-gray-600">10 gare vertical di montagna</h3>
           <h1 className="mt-2 text-3xl">Circuito a finalità <span className="px-1 bg-yellow-200">benefica</span></h1>
@@ -33,20 +64,8 @@ export default async function Home() {
           </FadeUpAnimation>
         </div>
       </div>
-      {/*<div className="hidden lg:flex items-start">
-        <div className="shadow-lg z-10">
-          <FadeUpAnimation>
-            <img src="/images/tre.webp" alt="Header image" className="" width={300} />
-          </FadeUpAnimation>
-        </div>
-        <div className="relative -left-10 top-5 shadow-lg">
-          <FadeUpAnimation>
-            <img src="/images/due.webp" alt="Header image" className="" width={300} />
-          </FadeUpAnimation>
-        </div>
-      </div>*/}
 
-    </div>
+    </div>*/}
 
 
     {serie.status === 'open' && <BannerCarnet serie={serie} className="mt-16" />}

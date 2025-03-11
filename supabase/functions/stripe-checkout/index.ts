@@ -1,8 +1,8 @@
 import { Hono } from 'jsr:@hono/hono'
 import Stripe from 'https://esm.sh/stripe@16?target=denonext';
 //import { Buffer } from 'node:buffer'
-import { encodeBase64, decodeBase64 } from "jsr:@std/encoding";
-
+//import { encodeBase64, decodeBase64 } from "jsr:@std/encoding";
+import { encodeBase64 } from "jsr:@std/encoding/base64";
 
 const app = new Hono()
 
@@ -38,30 +38,30 @@ app.post('/stripe-checkout', async (c) => {
       });
     }
 
-  //const encodedOrder = new TextEncoder().encode(JSON.stringify(order))
-  const q = 'lolle'//encodeBase64(encodedOrder);
+  const origin = 'https://goinupvertical-git-v10-shadowf4xs-projects.vercel.app'
+  const q = encodeBase64(JSON.stringify(order));
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: 'payment',
     submit_type: 'pay',
     //payment_method_types: ['card'],
     currency: 'eur',
-    customer_email: order.user_email,
+    customer_email: order.customer_email,
     line_items,
     automatic_tax: {
       enabled: false,
     },
     metadata: {
       order_id: order.id,
-      event_id: order.items[0].event_id ?? '',
+      //event_id: order.items[0].event_id ?? '',
     },
     payment_intent_data: {
       metadata: {
         order_id: order.id,
-        event_id: order.items[0].event_id ?? '',
+        //event_id: order.items[0].event_id ?? '',
       },
     },
-    success_url: `https://goinupvertical.it/checkout/confirm?session_id={CHECKOUT_SESSION_ID}&q=${q}`,
-    cancel_url: 'https://goinupvertical.it/checkout',//headers.referer,
+    success_url: `${origin}/checkout/confirm?session_id={CHECKOUT_SESSION_ID}&q=${q}`,
+    cancel_url: `${origin}/checkout`,//headers.referer,
   };
 
   console.log(params)

@@ -3,6 +3,8 @@ import './globals.css'
 import Navbar from '@components/navbar'
 import Footer from '@components/footer'
 import { fonts } from '@utils/fonts'
+import { AppShell, Burger, MantineProvider } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks'
 
 export const metadata: Metadata = {
   title: "Goinup Vertical",
@@ -14,10 +16,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="it">
       <body className={`${fonts.map(font => font.variable).join(' ')} antialiased flex flex-col min-h-screen`}>
-        <Navbar />
+      <Navbar />
         <div className="px-4 py-8">
           {children}
         </div>
