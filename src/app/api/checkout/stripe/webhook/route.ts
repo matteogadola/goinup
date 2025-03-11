@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import { getOrder } from '@utils/data/orders';
+import { getOrder, updateOrder } from '@utils/data/orders';
+import { dt } from '@utils/date';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
@@ -88,12 +89,12 @@ export async function POST(req: Request) {
         }
 
         // verifica che session.payment_status === 'paid' ? 'paid' : 'awaiting',
-        /*await updateOrder(order_id, {
+        await updateOrder(order_id, {
           status: 'confirmed',
           payment_id: session.payment_intent as string,
           payment_status: 'paid',
           payment_date: dt.unix(session.created).utc().format(),
-        });*/
+        });
         //await sendConfirmationMail(order);
       } else {
         console.error(`Checkout completed terminato in errore: ${JSON.stringify(session)}`);

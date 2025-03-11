@@ -31,6 +31,13 @@ export const updateOrder = async (id: number, params: Partial<any>) => {
       throw new Error(error.message);
     }
 
+    const { data: lolle, error: errorDue } = await supabase.from('order_items').update(params).eq('order_id', id);
+
+    if (errorDue) {
+      console.warn(`[updateOrder] error: ${errorDue.message}`);
+      throw new Error(errorDue.message);
+    }
+
     return data;
   } catch (e: any) {
     console.warn(`[updateOrder] exception: ${e.message}`);
