@@ -1,15 +1,7 @@
 import { Metadata, NextPage } from 'next'
 import Image from 'next/image'
-import { Event } from '@/types/events'
-import { getEvent, getEvents } from '@/lib/events'
-import { getItem } from '@/lib/items'
-import { dt, getReadableDate } from '@/lib/date'
-import { base64 } from '@/lib/helpers'
-import { getEntry } from '@/lib/entries'
 import { redirect, useSearchParams } from 'next/navigation'
-import { Order } from '@/types/orders'
-import Navbar from '@/components/navbar'
-import Footer from '@/components/footer'
+import { base64 } from '@utils/text'
 
 interface SearchParams {
   session_id?: string;
@@ -21,14 +13,13 @@ interface Props {
 }
 
 export default function CheckoutConfirmPage({ searchParams }: Props) {
-  const order = base64.decode<Order>(searchParams.q);
+  const order = base64.decode<any>(searchParams.q);
   
   const detail = <></>
 
   if (order?.items === undefined || !order.items.length) {
     return (
       <>
-        <Navbar promoter="goinup" />
         <section className="page">
           <span className="overtitle">Conferma</span>
           <div className="text mt-2">
@@ -42,7 +33,6 @@ export default function CheckoutConfirmPage({ searchParams }: Props) {
 
   return (
     <>
-      <Navbar promoter={order.promoter_id} />
       <section className="page">
         <span className="overtitle">Conferma</span>
         <h1 className="title mt-3">Ordine n. {order.id}</h1>
@@ -58,7 +48,7 @@ export default function CheckoutConfirmPage({ searchParams }: Props) {
             </thead>
             <tbody>
               {
-                order.items.map((item, index) =>
+                order.items.map((item: any, index: any) =>
                   <tr key={index}>
                     <td className="py-2">{item.name}</td>
                     <td className="py-2">{item.description}</td>
@@ -89,11 +79,10 @@ export default function CheckoutConfirmPage({ searchParams }: Props) {
             .</p>
         </div>
       </section>
-      <Footer promoter={order.promoter_id} />
     </>
   )
 }
 
 export const metadata: Metadata = {
-  title: 'Conferma ordine',
+  title: 'Goinup | Conferma ordine',
 }
