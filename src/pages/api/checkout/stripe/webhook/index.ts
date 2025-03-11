@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import { getOrder, updateOrder } from '@utils/supabase/queries';
+import { getOrder, updateOrder } from '@api/orders';
 import { dt } from '@utils/date';
 
 // https://stripe.com/docs/api/versioning
@@ -9,7 +9,6 @@ import { dt } from '@utils/date';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
 });
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 export const config = { api: { bodyParser: false } };
 
