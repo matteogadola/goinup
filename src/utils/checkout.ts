@@ -12,7 +12,7 @@ export async function createCheckout(orderData: any) {//Checkout) {
     body: orderData
   })*/
 
-  const response = await fetch('/api/checkout', {
+  const response = await fetch(process.env.URL + '/api/checkout', {
     method: 'POST',
     body: JSON.stringify(orderData),
     headers: {
