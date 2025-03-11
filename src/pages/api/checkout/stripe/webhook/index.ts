@@ -13,13 +13,13 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 //export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  const buf = await buffer(req);
+  //const buf = await buffer(req);
   const signature = req.headers['stripe-signature']!;
   let receivedEvent
 
   try {
     receivedEvent = await stripe.webhooks.constructEventAsync(
-      buf,
+      req.body,
       signature!,
       process.env.STRIPE_WEBHOOK_SECRET!
     )
