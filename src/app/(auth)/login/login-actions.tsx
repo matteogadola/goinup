@@ -30,7 +30,7 @@ export async function loginWithPassword(credentials: SignInWithPasswordCredentia
 }
 
 export async function loginWithGoogle() {
-  /*const supabase = await createClient()
+  const supabase = await createClient()
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
@@ -45,7 +45,7 @@ export async function loginWithGoogle() {
   
   if (data.url) {
     redirect(data.url)
-  }*/
+  }
 }
 
 export async function loginWithFacebook() {

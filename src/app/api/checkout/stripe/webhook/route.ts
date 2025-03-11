@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { Order, OrderItem } from '@d/orders'
 import { createClient } from '@utils/supabase/admin';
@@ -29,8 +27,9 @@ export async function POST(req: Request) {
   }
 
   if (receivedEvent.livemode !== true) {
-    console.log('non live')
-    //return res.status(200).send('');
+    return new Response(`webhook is for live only`, {
+      status: 200,
+    })
   }
  
   let order_id: number;

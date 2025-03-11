@@ -19,6 +19,7 @@ export default async function LoginForm({
           {/*<StravaButton formAction={loginWithStrava} className="lg:col-span-2" />*/}
           <GoogleLoginButton formAction={loginWithGoogle} />
         </div>
+        <span className="text-sm m-auto uppercase mt-4">Oppure</span>
       </div>
       <EmailLoginForm formAction={loginWithPassword} />
       </form>

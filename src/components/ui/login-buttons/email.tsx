@@ -73,7 +73,7 @@ export default function EmailLoginForm({ formAction }: Partial<Props>) {
           required
         />
         {/*!!error && <ErrorText>{error.message}</ErrorText>*/}
-        <Button type="submit" formAction={formAction} loading={isLoading} disabled={pending}>Accedi</Button>
+        <Button type="submit" className="mt-4" formAction={formAction} loading={isLoading} disabled={pending}>Accedi</Button>
       </MantineProvider>
     </div>
   )
