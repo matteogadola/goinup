@@ -94,13 +94,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           payment_status: 'paid',
           payment_date: dt.unix(session.created).utc().format(),
         });
-        await sendConfirmationMail(order);
+        //await sendConfirmationMail(order);
       } else {
         console.error(`Checkout completed terminato in errore: ${JSON.stringify(session)}`);
       }
       break;
     default:
-      console.debug(`Arrivato evento non gestito: ${event.type}`);
+      console.debug(`Arrivato evento non gestito: ${receivedEvent.type}`);
       break;
   }
   res.status(200).send('');
