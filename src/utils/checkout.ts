@@ -11,8 +11,9 @@ export async function createCheckout(orderData: any) {//Checkout) {
     method: 'POST',
     body: orderData
   })*/
-
-  const response = await fetch(process.env.URL + '/api/checkout', {
+  console.log(process.env.NEXT_PUBLIC_BASE_URL)
+  //const response = await fetch(process.env.NEXT_PUBLIC_BASE_URL + '/api/checkout', {
+  const response = await fetch('https://goinupvertical-git-v10-shadowf4xs-projects.vercel.app/api/checkout', {
     method: 'POST',
     body: JSON.stringify(orderData),
     headers: {
