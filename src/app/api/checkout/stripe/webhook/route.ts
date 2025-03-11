@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
+import { getOrder } from '@utils/data/orders';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
@@ -75,12 +76,14 @@ export async function POST(req: Request) {
       //const items = JSON.parse(base64.encode(session.metadata?.items));
       //const order = JSON.parse(base64.encode(session.metadata?.q)) as Order;
 
-      /*if (session.payment_intent && !isNaN(order_id)) {
+      if (session.payment_intent && !isNaN(order_id)) {
         const order = await getOrder(order_id);
 
         if (order === null) {
           console.error(`Checkout completed in errore durante il recupero dell'ordine: ${JSON.stringify(session)}`);
-          return res.status(500).send('');
+          return new Response(``, {
+            status: 400,
+          })
         }
 
         // verifica che session.payment_status === 'paid' ? 'paid' : 'awaiting',
@@ -89,11 +92,11 @@ export async function POST(req: Request) {
           payment_id: session.payment_intent as string,
           payment_status: 'paid',
           payment_date: dt.unix(session.created).utc().format(),
-        });
+        });*/
         //await sendConfirmationMail(order);
       } else {
         console.error(`Checkout completed terminato in errore: ${JSON.stringify(session)}`);
-      }*/
+      }
       break;
     default:
       console.debug(`Arrivato evento non gestito: ${receivedEvent.type}`);
