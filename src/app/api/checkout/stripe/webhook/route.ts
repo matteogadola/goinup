@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import { getOrder, updateOrder } from '@utils/data/orders';
+import { Order, OrderItem } from '@d/orders'
+import { createClient } from '@utils/supabase/admin';
+
 import { dt } from '@utils/date';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -41,11 +43,11 @@ export async function POST(req: Request) {
       console.warn(`Pagamento fallito per ${order_id}`);
 
       if (payment.id && !isNaN(order_id)) {
-        /*await updateOrder(order_id, {
+        await updateOrder(order_id, {
           payment_id: payment.id,
           payment_status: 'failed',
           payment_date: dt.unix(payment.created).utc().format(),
-        });*/
+        });
 
         /*await deleteEntries(order_id, {
           payment_id: payment.id,
@@ -62,11 +64,11 @@ export async function POST(req: Request) {
       console.info(`Checkout expired per ${order_id}`);
 
       if (sessionExp.payment_intent && !isNaN(order_id)) {
-        /*await updateOrder(order_id, {
+        await updateOrder(order_id, {
           payment_id: sessionExp.payment_intent as string,
           payment_status: 'failed',
           payment_date: dt.unix(sessionExp.created).utc().format(),
-        });*/
+        });
       }
       break;
     case 'checkout.session.completed':
@@ -80,7 +82,6 @@ export async function POST(req: Request) {
       if (session.payment_intent && !isNaN(order_id)) {
         const order = await getOrder(order_id);
 
-        console.log(order)
         if (order === null) {
           console.error(`Checkout completed in errore durante il recupero dell'ordine: ${JSON.stringify(session)}`);
           return new Response(``, {
@@ -108,3 +109,39 @@ export async function POST(req: Request) {
     status: 200,
   })
 }
+
+const getOrder = async (id: number) => {
+  const supabase = createClient()
+  const { data } = await supabase.from('orders').select().eq('id', id).returns<Order[]>().single();
+
+  if (data !== null) {
+    const { data: items } = await supabase.from('order_items').select().eq('order_id', id).returns<OrderItem[]>();
+    data.items = items ?? [];
+  }
+
+  return data;
+};
+
+const updateOrder = async (id: number, params: Partial<any>) => {
+  const supabase = createClient()
+  try {
+    const { data, error } = await supabase.from('orders').update(params).eq('id', id);
+
+    if (error) {
+      console.warn(`[updateOrder] error: ${error.message}`);
+      throw new Error(error.message);
+    }
+
+    const { data: lolle, error: errorDue } = await supabase.from('order_items').update(params).eq('order_id', id);
+
+    if (errorDue) {
+      console.warn(`[updateOrder] error: ${errorDue.message}`);
+      throw new Error(errorDue.message);
+    }
+
+    return data;
+  } catch (e: any) {
+    console.warn(`[updateOrder] exception: ${e.message}`);
+    throw e;
+  }
+};

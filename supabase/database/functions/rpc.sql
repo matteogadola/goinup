@@ -5,7 +5,7 @@ BEGIN
   FROM entries E
   INNER JOIN order_items OI ON E.order_item_id = OI.id
   WHERE (OI.payment_status = 'paid' OR (OI.payment_method = 'cash' AND OI.payment_status = 'pending'))
-  AND E.event_id = _event_id AND tin = _tin;
+  AND E.event_id = _event_id AND UPPER(tin) = UPPER(_tin);
   
   RETURN FOUND;
 END;
