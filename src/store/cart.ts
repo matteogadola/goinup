@@ -1,5 +1,4 @@
 import { create, createStore, StateCreator } from 'zustand';
-import { ssrExchange } from 'zustand/middleware'
 
 import { EntryForm } from '@d/entries';
 /*
@@ -49,6 +48,13 @@ export interface Item {
   payment_methods: string[];
   event_id: string;
   entry?: any;//EntryForm;
+}
+
+export const initCartStore = (): CartState => {
+  return {
+    items: [],
+    paymentMethod: 'stripe',
+  }
 }
 
 export const defaultInitState: CartState = {
