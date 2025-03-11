@@ -2,7 +2,7 @@ import { Metadata, NextPage } from 'next'
 import Image from 'next/image'
 import { redirect, useSearchParams } from 'next/navigation'
 import { base64 } from '@utils/text'
-import { useCartStore } from '@store/cart';
+//import { useCartStore } from '@store/cart';
 import { useEffect } from 'react';
 /*
 interface SearchParams {
@@ -19,7 +19,7 @@ export default function CheckoutConfirmPage({ searchParams }: any) {
   console.log(order)
   const detail = <></>
 
-  useEffect(() => useCartStore.setState({ items: [] }), [])
+  //useEffect(() => useCartStore.setState({ items: [] }), [])
 
   if (order?.items === undefined || !order.items.length) {
     return (
