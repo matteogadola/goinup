@@ -166,8 +166,15 @@ export default function EventEntryForm({ event, product }: { event: any, product
 
     if (items.length === 0 || form.isValid()) {
       await save(data)
-      router.push('/checkout')
+
+      const items = useCartStore.getState().items
+      if (items.length) {
+        router.push('/checkout')
+      }
     } else {
+      //if (form.validate().hasErrors) return;
+      //router.push('/checkout')
+
       if (form.isTouched()) {
         console.log('submit è toccato')
         if (form.validate().hasErrors) return;
@@ -176,7 +183,7 @@ export default function EventEntryForm({ event, product }: { event: any, product
         console.log('submit è sporco')
         if (form.validate().hasErrors) return;
       }
-      router.push('/checkout')
+      
     }
   }
 
