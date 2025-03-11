@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   if (receivedEvent.livemode !== true) {
-    return res.status(200).send('');
+    //return res.status(200).send('');
   }
 
   let order_id: number;
