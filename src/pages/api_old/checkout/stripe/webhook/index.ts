@@ -3,16 +3,16 @@ import { buffer } from 'micro';
 import Stripe from 'stripe';
 //import { getOrder, updateOrder } from '@api/orders';
 
-
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-02-24.acacia',
+});
 
 export const config = { api: { bodyParser: false } };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   // https://stripe.com/docs/api/versioning
   // Handle the event - https://stripe.com/docs/api/events/types
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2025-02-24.acacia',
-  });
+  
 
   const buf = await buffer(req);
   const signature = req.headers['stripe-signature']!;
@@ -107,11 +107,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   res.status(200).send('');
 }
 
-import { createClient } from "@utils/supabase/server";
+import { createClientForApi } from "@utils/supabase/server";
 import { Order, OrderItem } from '@d/orders'
+import { NextRequest, NextResponse } from 'next/server'
 
 export const getOrder = async (id: number) => {
-  const supabase = await createClient()
+  const supabase = await createClientForApi()
 
   const { data } = await supabase.from('orders').select().eq('id', id).returns<Order[]>().single();
 
