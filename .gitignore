@@ -3,7 +3,13 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.js
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+deno.lock
 
 # testing
 /coverage
@@ -25,8 +31,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
+# env files
+.env*
+.temp
 
 # vercel
 .vercel
@@ -34,14 +41,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# editor
-/.vscode
-
-# TEMP
-/.github/workflows/vercel-deploy.yml
-/.github/workflows/firebase-hosting-merge.yml
-
-/public/images/old
-# Local Netlify folder
-.netlify
