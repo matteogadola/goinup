@@ -3,6 +3,7 @@ import { Order, OrderItem } from '@d/orders'
 import { createClient } from '@utils/supabase/admin';
 
 import { dt } from '@utils/date';
+import { sendConfirmationMail } from '@/utils/mailer';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-02-24.acacia',
@@ -95,14 +96,7 @@ export async function POST(req: Request) {
           payment_status: 'paid',
           payment_date: dt.unix(session.created).utc().format(),
         });
-        //await sendConfirmationMail(order);
-
-        const supabase = createClient()
-        const { data, error } = await supabase.functions.invoke('mail-legacy', {
-          method: 'POST',
-          body: order
-        })
-
+        await sendConfirmationMail(order);
       } else {
         console.error(`Checkout completed terminato in errore: ${JSON.stringify(session)}`);
       }
