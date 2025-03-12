@@ -3,6 +3,7 @@ import LoginForm from './login-form';
 
 export default function LoginPage() {
   console.log(process.env.NEXT_PUBLIC_BASE_URL)
+
   return (
     <div className="flex grow justify-center items-center">
       <div className="w-4/5 md:w-3/5 lg:w-2/5 h-fit py-8 px-6 bg-yellow-400/40 rounded">
