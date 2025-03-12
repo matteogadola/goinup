@@ -167,9 +167,13 @@ export default function EventEntryForm({ event, product }: { event: any, product
 
     if (await save(data)) {
       router.push('/checkout')
-    } else if (items.length && !form.isDirty()) {
-      form.clearErrors()
-      router.push('/checkout')
+    } else if (!form.isDirty()) {
+      const items = useCartStore.getState().items
+
+      if (items.length) {
+        form.clearErrors()
+        router.push('/checkout')
+      }
     }
   }
 
