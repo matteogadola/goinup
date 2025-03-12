@@ -11,10 +11,13 @@ export const handleSubmit = async (event: any) => {
 }
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
-export async function loginWithPassword(credentials: SignInWithPasswordCredentials): Promise<void> {
+export async function loginWithPassword(formData: FormData): Promise<void> {
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword(credentials)
+  const { error } = await supabase.auth.signInWithPassword({
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  })
 
   if (error) {
     switch (error.code) {
@@ -25,8 +28,8 @@ export async function loginWithPassword(credentials: SignInWithPasswordCredentia
     }
   }
 
-  revalidatePath('/account', 'layout')
-  redirect('/account')
+  revalidatePath('/console', 'layout')
+  redirect('/console')
 }
 
 export async function loginWithGoogle() {
@@ -35,7 +38,7 @@ export async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'http://localhost:3000/auth/callback',
+      redirectTo: 'https://goinupvertical.it/auth/callback',
     },
   })
 
@@ -54,7 +57,7 @@ export async function loginWithFacebook() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'facebook',
     options: {
-      redirectTo: 'http://localhost:3000/auth/callback',
+      redirectTo: 'https://goinupvertical.it/auth/callback',
     },
   })
 

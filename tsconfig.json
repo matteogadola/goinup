@@ -22,12 +22,11 @@
       "@app/*": ["./src/app/*"],
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
-      "@api/*": ["./src/api/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@store/*": ["./src/store/*"],
       "@d/*": ["./src/types/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/types/entries.d.ts_old", "src/types/app.d.ts_old", "src/types/user.d.ts_old", "src/types/orders.d.ts_old"],
   "exclude": ["node_modules", "sanity-studio", "supabase"]
 }
