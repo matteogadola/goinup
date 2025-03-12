@@ -33,7 +33,7 @@ app.post('/checkout', async (c) => {
 
     console.debug(`[checkout] order: ${JSON.stringify(order)}`);
     
-    const origin = 'https://goinupvertical-git-v10-shadowf4xs-projects.vercel.app'
+    const origin = 'https://goinupvertical.it'
     const q = encodeBase64(JSON.stringify(order));
     const checkoutSessionUrl = `${origin}/checkout/confirm?&q=${q}`
 
