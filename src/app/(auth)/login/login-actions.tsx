@@ -23,6 +23,8 @@ export async function loginWithPassword(formData: FormData): Promise<void> {
     switch (error.code) {
       case 'invalid_credentials':
         throw new Error('Indirizzo email o password non corretti.')
+      case 'signup_disabled':
+        throw new Error('Le registrazioni sono attualmente disabilitate.')
       default:
         throw new Error(error.message)
     }
