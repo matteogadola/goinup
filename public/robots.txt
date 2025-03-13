@@ -1,7 +1,2 @@
 User-agent: *
 Disallow: /
-Allow: /results
-Allow: /media
-Allow: /regulation
-Allow: /sitemap.xml
-Sitemap: https://goinupvertical.it/sitemap.xml

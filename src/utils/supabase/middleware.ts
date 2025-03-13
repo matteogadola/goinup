@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { jwtDecode } from 'jwt-decode'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -27,10 +28,6 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  // Do not run code between createServerClient and
-  // supabase.auth.getUser(). A simple mistake could make it very hard to debug
-  // issues with users being randomly logged out.
-
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -39,7 +36,13 @@ export async function updateSession(request: NextRequest) {
 
   if (user && ['login', 'register'].includes(nextRoute)) {
     const url = request.nextUrl.clone()
-    url.pathname = '/account'
+    try {
+      const { data: { session } } = await supabase.auth.getSession()
+      const jwt = jwtDecode<any>(session!.access_token)
+      url.pathname = jwt?.user_role ? '/console' : '/account'
+    } catch(e) {
+      url.pathname = '/account'
+    }
     return NextResponse.redirect(url)
   } else if (!user && ['account', 'console'].includes(nextRoute)) {
     const url = request.nextUrl.clone()
