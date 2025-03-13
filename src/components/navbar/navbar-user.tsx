@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { UserIcon } from '@components/icons';
 import { createClient } from '@utils/supabase/client';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function NavbarUser({ user, className }: { user: any, className?: string }) {
   //const routePath = usePathname();
@@ -32,8 +33,13 @@ export default function NavbarUser({ user, className }: { user: any, className?:
 
   return (
     <>
-      <button className="hidden md:flex hover:opacity-70" onClick={toggle} title={user.email}>
-        <UserIcon />
+      <button className="hidden md:flex hover:opacity-70 hover:cursor-pointer" onClick={toggle} title={user.email}>
+        <Avatar>
+          {/*<AvatarImage src="" />*/}
+          <AvatarFallback>
+            <UserIcon />
+          </AvatarFallback>
+        </Avatar>
       </button>
       {isOpen &&
         <div className="absolute right-4 top-10 z-20 pt-2 mt-2 overflow-hidden bg-white rounded-md shadow-xl">

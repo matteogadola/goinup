@@ -24,7 +24,7 @@ export default function BannerCarnet({ serie, className }: { serie: any, classNa
   return (
     <section className={clsx("", className)}>
       <Link href={`events/${serie.slug.current}`}>
-        <div className="lg:w-4/5 lg:mx-auto relative rounded-lg block md:flex items-center bg-blue-50 shadow-xl hover:shadow-2xl min-h-10">
+        <div className="lg:w-4/5 max-w-250 lg:mx-auto relative rounded-lg block md:flex items-center bg-blue-50 shadow-xl hover:shadow-2xl min-h-10">
           <div className="hidden lg:flex relative w-full md:w-2/5 h-full overflow-hidden rounded-l-lg min-h-10">
             <img src={urlFor(serie.summary_image).url()} className="object-cover object-center" />
             <div className="absolute inset-0 w-full h-full bg-slate-500 opacity-20"></div>
