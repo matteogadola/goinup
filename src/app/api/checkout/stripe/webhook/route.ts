@@ -96,6 +96,12 @@ export async function POST(req: Request) {
           payment_status: 'paid',
           payment_date: dt.unix(session.created).utc().format(),
         });
+
+        //const supabase = createClient()
+        //const { data, error } = await supabase.functions.invoke('mail-legacy', {
+        //  method: 'POST',
+        //  body: order
+        //})
         await sendConfirmationMail(order);
       } else {
         console.error(`Checkout completed terminato in errore: ${JSON.stringify(session)}`);

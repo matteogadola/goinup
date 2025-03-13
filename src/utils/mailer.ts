@@ -72,7 +72,7 @@ export const sendConfirmationMail = async (order: Order) => {
   }
 
   const response = await sendMail({
-    to: order.user_email,
+    to: order.customer_email,
     subject: `Conferma ordine`,
     body: `
       <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -123,8 +123,9 @@ export const sendConfirmationMail = async (order: Order) => {
   }
 
   await updateOrder(order.id, {
+    notification_id: body.messageId,
     notification_date: dt().utc().format(),
-    notification_status: response.status === 201 ? 'success' : 'error',
+    notification_status: response.status === 201 ? 'success' : body.code ?? 'error',
   });
 
   return body?.success;
@@ -142,7 +143,7 @@ const updateOrder = async (id: number, params: Partial<Order>) => {
 
     return data;
   } catch (e: any) {
-    console.warn(`[updateOrder] exception: ${e.message}`);
-    throw e;
+    console.error(`[updateOrder] exception: ${e.message}`);
+    //throw e;
   }
 };
