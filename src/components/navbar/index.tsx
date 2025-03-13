@@ -25,7 +25,7 @@ export default async function Navbar() {
   ]
 
   return (
-    <header className="grid grid-cols-2 md:grid-cols-[200px_1fr_200px] px-4 h-16">
+    <header className="grid grid-cols-2 md:grid-cols-[200px_1fr_200px] px-8 h-16">
       <div className="flex items-center justify-start">
         <Link href="/" className="hover:opacity-70">
           <img src="/images/logo/goinup-header.webp" className="h-12 object-contain" alt="Logo" />
