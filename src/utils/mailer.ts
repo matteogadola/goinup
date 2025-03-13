@@ -117,6 +117,7 @@ export const sendConfirmationMail = async (order: Order) => {
   });
 
   const body = await response?.json();
+  console.log('invio mail', body)
 
   if (response.status !== 201) {
     console.error('Errore invio mail', body);
