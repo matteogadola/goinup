@@ -4,13 +4,14 @@ import { Promoter } from './promoters';
 export interface Order {
   id: number;
   user_id?: string | null;
-  user_email: string;
+  customer_email: string;
   customer_first_name?: string;
   customer_last_name?: string;
   date: string;
   status: string;
-  notification_date: string;
-  notification_status: string;
+  notification_id: string | null,
+  notification_date: string | null;
+  notification_status: string | null;
   payment_id: string | null;
   payment_date: string | null;
   payment_method: PaymentMethod;
