@@ -14,17 +14,16 @@ export default function CartButton() {
   const { items } = useCartStore();
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter()
+  const pathname = usePathname()
 
   const handleClick = () => {
     close()
     router.push('/checkout')
   }
 
-
-
   return (
     <>
-    {!!items.length &&
+    {!!(items.length && pathname !== '/checkout') &&
     <MantineProvider>
     <UnstyledButton className="hidden md:flex" onClick={open}>
       <CartIcon className="hover:text-blue-600" />
