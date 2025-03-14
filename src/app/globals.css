@@ -7,6 +7,8 @@
 @import "@mantine/core/styles.css";
 @import "@mantine/dates/styles.css";
 
+@import "./mantine.css";
+
 /*
 https://github.com/orgs/mantinedev/discussions/1672#discussioncomment-7561382
 @layer theme, base, mantine, components, utilities;
@@ -137,15 +139,6 @@ html, body {
   margin: 0;
 }
 
-.navbar {
-  &.actions {
-    background-color: red;
-  }
-}
-.navbar-actions {
-  background-color: red;
-}
-
 .link {
   color: var(--link);
   text-decoration: none;
@@ -253,7 +246,6 @@ form .field-helper > button,
 }
 */
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -281,6 +273,7 @@ form .field-helper > button,
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
   }
 
   .dark {
