@@ -246,8 +246,8 @@ export default function EventEntryForm({ event, product }: { event: any, product
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-            <Button onClick={onSave} variant="outline" classNames={{label: 'light'}}>Iscrivi altro partecipante</Button>
-            <Button onClick={onSubmit} variant="filled" classNames={{label: 'light'}}>Vai al pagamento</Button>
+            <Button onClick={onSave} variant="outline">Iscrivi altro partecipante</Button>
+            <Button onClick={onSubmit} variant="filled">Vai al pagamento</Button>
           </div>
 
         </form>

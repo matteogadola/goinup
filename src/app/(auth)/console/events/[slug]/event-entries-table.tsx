@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  Column,
   ColumnDef,
   ColumnFiltersState,
   flexRender,
@@ -20,7 +21,7 @@ import {
 
 import { Button } from "@/components/ui/shadcn/button"
 import { Input } from "@/components/ui/shadcn/input"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -70,43 +71,40 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <div className="grid grid-cols-3 items-center py-4 space-x-8">
-        <Input
+        <Filter
           placeholder="Cognome..."
-          value={(table.getColumn("last_name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("last_name")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+          column={table.getColumn("last_name")}
         />
-        <div className="ml-4 w-min">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Pagamento</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            {/*<DropdownMenuSeparator />*/}
-            <DropdownMenuCheckboxItem
-              checked={showPaymentStatusBar}
-              onCheckedChange={setShowPaymentStatus}
-            >
-              Confermato
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              checked={showActivityBar}
-              onCheckedChange={setShowActivityBar}
-            >
-              NON Confermato
-            </DropdownMenuCheckboxItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="hidden ml-4 w-min">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Pagamento</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              {/*<DropdownMenuSeparator />*/}
+              <DropdownMenuCheckboxItem
+                checked={showPaymentStatusBar}
+                onCheckedChange={setShowPaymentStatus}
+              >
+                Confermato
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={showActivityBar}
+                onCheckedChange={setShowActivityBar}
+              >
+                NON Confermato
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <></>
-        <Button onClick={open}><PlusIcon />Aggiungi iscrizione</Button>
-        <MantineProvider>
-          <Modal opened={opened} onClose={close} title={"NUOVA ISCRIZIONE"} withCloseButton={false} size="xl">
-            <ConsoleEventEntryCreate onClose={close} />
-          </Modal>
-        </MantineProvider>
+        <div className="hidden flex justify-end">
+          <Button onClick={open}><PlusIcon />Aggiungi iscrizione</Button>
+          <MantineProvider>
+            <Modal opened={opened} onClose={close} title={"NUOVA ISCRIZIONE"} withCloseButton={false} size="xl">
+              <ConsoleEventEntryCreate onClose={close} />
+            </Modal>
+          </MantineProvider>
+        </div>
       </div>
     <div className="rounded-md border">
       <Table>
@@ -153,5 +151,57 @@ export function DataTable<TData, TValue>({
       </Table>
     </div>
     </div>
+  )
+}
+
+function Filter({
+  column,
+  placeholder,
+  className,
+}: Partial<{
+  column: Column<any, unknown>,
+  placeholder: string
+  className: string
+}>) {
+  const value = String(column?.getFilterValue() ?? '')
+
+  return (
+    <DebouncedInput
+      className={className}
+      onChange={value => column?.setFilterValue(value)}
+      placeholder={placeholder}
+      type="text"
+      value={value}
+    />
+  )
+}
+
+// A typical debounced input react component
+function DebouncedInput({
+  value: initialValue,
+  onChange,
+  debounce = 500,
+  ...props
+}: {
+  value: string | number
+  onChange: (value: string | number) => void
+  debounce?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'>) {
+  const [value, setValue] = useState(initialValue)
+
+  useEffect(() => {
+    setValue(initialValue)
+  }, [initialValue])
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      onChange(value)
+    }, debounce)
+
+    return () => clearTimeout(timeout)
+  }, [value])
+
+  return (
+    <Input {...props} value={value} onChange={e => setValue(e.target.value)} />
   )
 }

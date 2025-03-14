@@ -23,7 +23,7 @@ export default function EntryConfirmButton({ entry }: { entry: any }) {
   // il bottone loading={loading} loaderProps={{ type: 'dots' }}
   return (
     <>
-      <Button variant="outline" onClick={open}>Conferma</Button>
+      <Button variant="outline" color="teal" onClick={open}>Conferma</Button>
       <Modal opened={opened} onClose={close} title={"CONFERMA ORDINE " + entry.order_id} withCloseButton={false} size="xl">
         <ConsoleEventEntryConfirm entry={entry} onClose={close} />
       </Modal>
@@ -72,7 +72,7 @@ function ConsoleEventEntryConfirm({ entry, onClose }: { entry: any, onClose: any
           {unpaidItems.length > 1
             ? <Button onClick={() => updateOrderItem(item.id)} disabled={item.payment_status !== 'pending'} variant="light" color="teal" fullWidth>
                 {item.payment_status === 'pending'
-                  ? <span>Conferma<span className="text-xs font-light">({item.price / 100}€)</span></span>
+                  ? <span>Conferma<span className="ml-1 text-xs font-light">({item.price / 100}€)</span></span>
                   : <span>Pagato</span>
                 }
               </Button>
@@ -86,7 +86,7 @@ function ConsoleEventEntryConfirm({ entry, onClose }: { entry: any, onClose: any
         </div>
         <div className="flex items-center justify-end mt-6 pt-4 px-4 border-t border-solid border-slate-200 rounded-b space-x-6">
           <Button onClick={onClose} variant="subtle" color="gray">Annulla</Button>
-          <Button onClick={() => updateOrderItems(order.id)} variant="filled" color="teal">{unpaidItems.length > 1 ? 'Conferma tutto' : 'Conferma'}<span className="text-xs font-light">({unpaidItems.reduce((a, v) => a + v.price, 0) / 100}€)</span></Button>
+          <Button onClick={() => updateOrderItems(order.id)} variant="filled" color="teal">{unpaidItems.length > 1 ? 'Conferma tutto' : 'Conferma'}<span className="ml-1 items-center text-xs font-light">({unpaidItems.reduce((a, v) => a + v.price, 0) / 100}€)</span></Button>
         </div>
 
     </>

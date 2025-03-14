@@ -1,3 +1,6 @@
+.mantine-Button-inner {
+  font-weight: var(--font-weight-light);
+}
 
 .header {
   border-bottom: 0;

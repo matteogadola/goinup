@@ -79,7 +79,6 @@ https://github.com/orgs/mantinedev/discussions/1672#discussioncomment-7561382
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -152,21 +151,6 @@ html, body {
 }
 
 
-
-/*.title {
-  font-family: var(--font-unbounded);
-
-  h1 {
-    font-size: var(--text-2xl);
-    line-height: var(--tw-leading, var(--text-2xl--line-height));
-  }
-
-  span.highlighted {
-    padding-inline: calc(var(--spacing) * 1);
-    background-color: var(--color-yellow-200);
-  }
-}*/
-
 h1 {
   font-size: var(--text-2xl);
   line-height: var(--tw-leading, var(--text-2xl--line-height));
@@ -190,13 +174,6 @@ h1 {
   }
 }*/
 
-
-
-
-
-.light {
-  font-weight: var(--font-weight-light)
-}
 
 /*
 form .label {
@@ -311,4 +288,5 @@ form .field-helper > button,
   body {
     @apply bg-background text-foreground;
   }
+
 }
