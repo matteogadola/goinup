@@ -16,6 +16,7 @@ import { sendConfirmationMail } from "@/utils/mailer"
 import { MantineProvider, Modal } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import ConsoleEventEntryConfirm from "./event-entry-confirm"
+import EntryConfirmButton from "./event-entry-confirm"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Payment = {
@@ -82,17 +83,8 @@ export const columns: ColumnDef<Payment>[] = [
       const entry = row.original
 
       if (entry.payment_status === 'pending') {
-        const [opened, { open, close }] = useDisclosure(false)
-
         return (
-          <>
-          <Button variant="outline" onClick={open}>Conferma</Button>
-            <MantineProvider>
-              <Modal opened={opened} onClose={close} title={"CONFERMA ORDINE " + entry.order_id} withCloseButton={false} size="xl">
-                <ConsoleEventEntryConfirm entry={entry} onClose={close} />
-              </Modal>
-            </MantineProvider>
-          </>
+          <EntryConfirmButton entry={entry} />
         )
       }
     },

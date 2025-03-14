@@ -16,7 +16,22 @@ import { createClient } from "@/utils/supabase/client";
 import { Order } from "@/types/orders";
 import dayjs from "dayjs";
 
-export default function ConsoleEventEntryConfirm({ entry, onClose }: { entry: any, onClose: any }) {
+
+export default function EntryConfirmButton({ entry }: { entry: any }) {
+  const [opened, { open, close }] = useDisclosure(false)
+
+  // il bottone loading={loading} loaderProps={{ type: 'dots' }}
+  return (
+    <>
+      <Button variant="outline" onClick={open}>Conferma</Button>
+      <Modal opened={opened} onClose={close} title={"CONFERMA ORDINE " + entry.order_id} withCloseButton={false} size="xl">
+        <ConsoleEventEntryConfirm entry={entry} onClose={close} />
+      </Modal>
+    </>
+  )
+}
+
+function ConsoleEventEntryConfirm({ entry, onClose }: { entry: any, onClose: any }) {
   const [order, setOrder] = useState<Order>();
   const unpaidItems = useMemo(() => order?.items.filter(i => i.payment_status === 'pending') ?? [], [order])
 
