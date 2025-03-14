@@ -1,12 +1,5 @@
-import type { Metadata, ResolvingMetadata } from 'next'
-import Link from 'next/link';
-//import { getEvent, getEvents } from '@utils/supabase/queries';
-import { urlFor } from '@utils/sanity';
-import { notFound } from 'next/navigation';
 import { dt } from '@utils/date';
 import { createClient } from '@/utils/supabase/server';
-import ConsoleEventEntries from './event-entries';
-import { MantineProvider, Tabs } from '@mantine/core';
 import ConsoleEventTabs from './event-tabs';
 
 interface Params {
