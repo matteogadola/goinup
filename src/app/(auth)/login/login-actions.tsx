@@ -11,13 +11,10 @@ export const handleSubmit = async (event: any) => {
 }
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
-export async function loginWithPassword(formData: FormData): Promise<void> {
+export async function loginWithPassword(credentials: { email: string, password: string }): Promise<void> {
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  })
+  const { error } = await supabase.auth.signInWithPassword(credentials)
 
   if (error) {
     switch (error.code) {
@@ -30,8 +27,8 @@ export async function loginWithPassword(formData: FormData): Promise<void> {
     }
   }
 
-  revalidatePath('/console', 'layout')
-  redirect('/console')
+  revalidatePath('/login', 'layout')
+  redirect('/login')
 }
 
 export async function loginWithGoogle() {
