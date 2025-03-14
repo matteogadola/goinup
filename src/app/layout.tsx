@@ -44,7 +44,7 @@ export default function RootLayout({
             <AppShellNavbar p="md">
               <Sidebar links={links} />
             </AppShellNavbar>
-            <AppShellMain>
+            <AppShellMain className="page">
               {children}
             </AppShellMain>
           </AppContainer>

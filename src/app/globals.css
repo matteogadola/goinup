@@ -290,3 +290,27 @@ form .field-helper > button,
   }
 
 }
+
+
+
+.navbar {
+  /*margin: 0 auto;*/
+  @apply flex justify-between items-center h-full px-4;
+
+
+  background-color: red;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 40rem 1fr 40rem;
+}
+
+.page {
+  padding-inline: 1rem;
+
+  @media (width >= 80rem /* 1280px */) {
+    max-width: var(--container-7xl) /* 80rem = 1280px */;
+  }
+
+  margin: auto;
+}
+

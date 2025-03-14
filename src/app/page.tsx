@@ -12,10 +12,9 @@ export default async function Home() {
 
   return (
     <>
-
     <div className="grid grid-cols-1 lg:grid-cols-2">
 
-      <div className="flex lg:hidden items-start pb-16">
+      <div className="flex lg:hidden items-start pb-8">
         <div className="shadow-lg">
           <FadeUpAnimation>
             <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-60" />
@@ -23,7 +22,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div>
+      <div className="lg:mt-8">
         <div className="flex flex-col pl-4 space-y-2 lg:mt-20">
           <h3 className="text-lg text-gray-600">10 gare vertical di montagna</h3>
           <h1 className="mt-2 text-3xl">Circuito a finalità <span className="px-1 bg-yellow-200">benefica</span></h1>
@@ -31,8 +30,8 @@ export default async function Home() {
           </div>
       </div>
 
-      <div className="hidden lg:flex lg:flex-col items-start">
-        <div className="shadow-lg ">
+      <div className="hidden lg:flex lg:flex-col items-center mt-16">
+        <div className="relative -left-10 shadow-lg">
           <FadeUpAnimation>
             <img src="/images/homepage/lino.jpg" alt="Header image" className="grayscale-50" width={400} />
           </FadeUpAnimation>

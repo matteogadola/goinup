@@ -26,7 +26,7 @@ export default async function Navbar({
   const { data: { user }, error } = await supabase.auth.getUser()
 
   return (
-    <div className="flex justify-between items-center h-full px-4">
+    <div className="page flex justify-between items-center h-full">
       <NavbarBurger />
 
       <div className="flex items-center justify-center w-40">
