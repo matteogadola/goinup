@@ -40,7 +40,7 @@ export async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://goinupvertical.it/auth/callback',
+      redirectTo: 'https://www.goinupvertical.it/auth/callback',
     },
   })
 
@@ -59,7 +59,7 @@ export async function loginWithFacebook() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'facebook',
     options: {
-      redirectTo: 'https://goinupvertical.it/auth/callback',
+      redirectTo: 'https://www.goinupvertical.it/auth/callback',
     },
   })
 

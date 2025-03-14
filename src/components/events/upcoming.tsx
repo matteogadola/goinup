@@ -91,7 +91,9 @@ export default async function UpcomingEvents({ events }: { events: any[] }) {
                 <div>
                   {}
                 </div>
-                <p className="text-gray-700 text-base mt-2 hidden"><EventEntryStatus event={event} /></p>
+                <p className="text-gray-700 text-base mt-2 hidden">
+                  <EventEntryStatus event={event} />
+                </p>
               </div>
 
             </div>

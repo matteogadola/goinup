@@ -46,9 +46,9 @@ export const eventType = defineType({
       options: {
         list: [
           {title: 'Nascosto', value: 'internal'},
-          {title: 'Aperto', value: 'open'},
-          {title: 'Chiuso', value: 'closed'},
-          {title: 'Sold out', value: 'sold-out'},
+          {title: 'Visibile', value: 'open'},
+          //{title: 'Chiuso', value: 'closed'},
+          //{title: 'Sold out', value: 'sold-out'},
         ]
       },
       initialValue: 'internal',
@@ -87,8 +87,8 @@ export const eventType = defineType({
       fields: [
         {name: 'distance', type: 'number', title: 'Distanza'},
         {name: 'elevation_gain', type: 'number', title: 'Dislivello'},
-        {name: 'start_line', type: 'number', title: 'Luogo di Partenza'},
-        {name: 'finish_line', type: 'number', title: 'Luogo di Arrivo'},
+        {name: 'start_line', type: 'string', title: 'Luogo di Partenza'},
+        {name: 'finish_line', type: 'string', title: 'Luogo di Arrivo'},
       ],
       hidden: ({document}) => document?.type !== 'race',
     }),
@@ -142,16 +142,17 @@ export const eventType = defineType({
     select: {
       title: 'name',
       date: 'date',
-      media: 'summary_image'
+      flyer: 'flyer',
+      summary: 'summary_image'
     },
-    prepare({title, date, media}) {
+    prepare({title, date, flyer, summary}) {
       const formatter = new Intl.DateTimeFormat('it', { day: 'numeric', month: 'long', year: 'numeric' });
       const subtitle = date ? formatter.format(new Date(date)) : '';
 
       return {
         title: title,
         subtitle: subtitle,
-        media: media
+        media: flyer ?? summary
       }
     }
   },
