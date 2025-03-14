@@ -15,7 +15,7 @@ import Sidebar from '@/components/ui/mantine/sidebar';
   description: "Circuito di gare vertical a scopo benefico",
 };
 */
-const nav = [
+const links = [
   { name: "Home", path: "/", visible: false },
   { name: "Classifiche", path: "/results" },
   { name: "Foto e Video", path: "/media" },
@@ -39,10 +39,10 @@ export default function RootLayout({
         <MantineProvider>
           <AppContainer>
             <AppShellHeader>
-              <Navbar nav={nav} />
+              <Navbar links={links} />
             </AppShellHeader>
             <AppShellNavbar p="md">
-              <Sidebar nav={nav} />
+              <Sidebar links={links} />
             </AppShellNavbar>
             <AppShellMain>
               {children}
