@@ -21,7 +21,7 @@ export default function ConsoleEventTabs({
   //const items = await getItems({ eventId: event.id, status: 'published' })
 
   return (
-      <MantineProvider>
+      <>
       <Tabs defaultValue="entries">
       <Tabs.List>
         <Tabs.Tab value="entries">
@@ -46,6 +46,6 @@ export default function ConsoleEventTabs({
           </div>
       </Tabs.Panel>
     </Tabs>
-      </MantineProvider>
+      </>
   )
 }
