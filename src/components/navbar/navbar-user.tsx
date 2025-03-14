@@ -6,8 +6,9 @@ import { useState, useEffect } from 'react'
 import { UserIcon } from '@components/icons';
 import { createClient } from '@utils/supabase/client';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { User } from '@supabase/supabase-js';
 
-export default function NavbarUser({ user, className }: { user: any, className?: string }) {
+export default function NavbarUser({ user, className }: { user: User, className?: string }) {
   //const routePath = usePathname();
   const router = useRouter();
   //const auth = supabase.auth;
@@ -33,9 +34,9 @@ export default function NavbarUser({ user, className }: { user: any, className?:
 
   return (
     <>
-      <button className="hidden md:flex hover:opacity-70 hover:cursor-pointer" onClick={toggle} title={user.email}>
+      <button className="hidden md:flex hover:shadow-lg hover:cursor-pointer" onClick={toggle} title={user.email}>
         <Avatar>
-          {/*<AvatarImage src="" />*/}
+          <AvatarImage src={user.user_metadata.avatar_url} />
           <AvatarFallback>
             <UserIcon />
           </AvatarFallback>

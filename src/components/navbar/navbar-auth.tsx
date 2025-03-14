@@ -11,13 +11,13 @@ import NavbarUser from './navbar-user';
 
 export default async function AuthButton() {
   const supabase = await createClient()
-  const { data, error } = await supabase.auth.getUser()
+  const { data: { user }, error } = await supabase.auth.getUser()
 
   return (
     <>
-      {error || !data?.user
+      {error || !user
         ? <span />
-        : <NavbarUser user={data.user} />
+        : <NavbarUser user={user} />
       }
     </>
   )

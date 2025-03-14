@@ -18,6 +18,7 @@ export interface Order {
   payment_status: PaymentStatus;
   items: OrderItem[];
   promoter_id?: string; // ???
+  amount: number
 }
 
 export type OrderStatus = 'created' | 'cancelled' | 'error' | 'confirmed';
@@ -33,5 +34,6 @@ export interface OrderItem {
   quantity: number;
   price: number; //
   description?: string | null;
+  payment_status: string
   entry?: Entry;
 }

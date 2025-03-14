@@ -8,7 +8,7 @@ const app = new Hono()
 
 // https://stripe.com/docs/api/versioning
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'), {
-  apiVersion: '2024-11-20',
+  apiVersion: '2025-02-24.acacia',
 });
 
 app.post('/stripe-checkout', async (c) => {

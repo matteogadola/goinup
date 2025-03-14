@@ -129,11 +129,21 @@ https://github.com/orgs/mantinedev/discussions/1672#discussioncomment-7561382
   }
 }
 */
-body {
+html, body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-poppins), Arial, Helvetica, sans-serif;
+  width: 100%;
+  margin: 0;
+}
 
+.navbar {
+  &.actions {
+    background-color: red;
+  }
+}
+.navbar-actions {
+  background-color: red;
 }
 
 .link {
