@@ -92,7 +92,7 @@ export default async function EventPage({
         <div className="flex lg:justify-center items-start">
           {!!flyer &&
             <img
-              src={urlFor(flyer)?.url()}
+              src={urlFor(flyer)}
               className="mt-4 lg:mt-0 aspect-auto"
               alt="Flyer"
               width={500}

@@ -50,7 +50,7 @@ function getBackgroudStyle(event: any): CSSProperties {
   let url = '/images/default-summary.webp'
 
   if (event.summary_image) {
-    url = urlFor(event.summary_image)?.url() ?? url
+    url = urlFor(event.summary_image) ?? url
   }
 
   return { 'background-image': `url("${url}")` } as CSSProperties

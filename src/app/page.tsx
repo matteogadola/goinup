@@ -79,7 +79,7 @@ export default async function Home() {
     
     {!!serie?.flyer &&
       <div className="flex mt-32 justify-center items-center">
-        <img src={urlFor(serie.flyer).url()} alt="goinup flyer" className="" width={700} />
+        <img src={urlFor(serie.flyer)} alt="goinup flyer" className="" width={700} />
       </div>
     }
 
