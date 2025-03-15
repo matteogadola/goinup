@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@utils/supabase/server'
 import { SignInWithPasswordCredentials } from '@supabase/supabase-js'
+import { getClaims } from '@/utils/supabase/helpers'
 
 export const handleSubmit = async (event: any) => {
   event.preventDefault();
@@ -11,13 +12,10 @@ export const handleSubmit = async (event: any) => {
 }
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
-export async function loginWithPassword(formData: FormData): Promise<void> {
+export async function loginWithPassword(credentials: { email: string, password: string }): Promise<void> {
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  })
+  const { data, error } = await supabase.auth.signInWithPassword(credentials)
 
   if (error) {
     switch (error.code) {
@@ -30,8 +28,10 @@ export async function loginWithPassword(formData: FormData): Promise<void> {
     }
   }
 
-  revalidatePath('/console', 'layout')
-  redirect('/console')
+  const url = (await getClaims(data.session))?.user_role ? '/console' : '/account'
+
+  revalidatePath(url, 'layout')
+  redirect(url)
 }
 
 export async function loginWithGoogle() {
@@ -40,7 +40,7 @@ export async function loginWithGoogle() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://goinupvertical.it/auth/callback',
+      redirectTo: 'https://www.goinupvertical.it/auth/callback',
     },
   })
 
@@ -59,7 +59,7 @@ export async function loginWithFacebook() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'facebook',
     options: {
-      redirectTo: 'https://goinupvertical.it/auth/callback',
+      redirectTo: 'https://www.goinupvertical.it/auth/callback',
     },
   })
 

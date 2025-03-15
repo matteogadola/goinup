@@ -10,7 +10,7 @@ export const urlFor = (source: Source) => {
     source = source?.asset?._ref
   }
 
-  return builder.image(source)
+  return builder.image(source).url()
 }
 
 export const urlForDowload = (source: Source, name?: string) => {

@@ -179,83 +179,81 @@ export default function EventEntryForm({ event, product }: { event: any, product
 
   return (
     <>
-      <MantineProvider>
-        <form className="py-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <form className="py-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
 
-            <TextInput
-              withAsterisk
-              label="Nome"
-              className="col-span-2"
-              key={form.key('first_name')}
-              {...form.getInputProps('first_name')}
-            />
+          <TextInput
+            withAsterisk
+            label="Nome"
+            className="col-span-2"
+            key={form.key('first_name')}
+            {...form.getInputProps('first_name')}
+          />
 
-            <TextInput
-              withAsterisk
-              label="Cognome"
-              className="col-span-2"
-              key={form.key('last_name')}
-              {...form.getInputProps('last_name')}
-            />
+          <TextInput
+            withAsterisk
+            label="Cognome"
+            className="col-span-2"
+            key={form.key('last_name')}
+            {...form.getInputProps('last_name')}
+          />
 
 
-            <TextInput
-              withAsterisk
-              label="Codice fiscale"
-              description={<span>Non lo ricordi? <button type="button" onClick={openTinModal} className="link">Calcolalo</button></span>}
-              className="col-span-2"
-              inputWrapperOrder={['label', 'input', 'description', 'error']}
-              key={form.key('tin')}
-              {...form.getInputProps('tin')}
-            />
+          <TextInput
+            withAsterisk
+            label="Codice fiscale"
+            description={<span>Non lo ricordi? <button type="button" onClick={openTinModal} className="link">Calcolalo</button></span>}
+            className="col-span-2"
+            inputWrapperOrder={['label', 'input', 'description', 'error']}
+            key={form.key('tin')}
+            {...form.getInputProps('tin')}
+          />
 
-            <Autocomplete
-              label="Società"
-              placeholder="Opzionale"
-              className="col-span-2"
-              limit={5}
-              key={form.key('club')}
-              {...form.getInputProps('club')}
-              data={clubs}
-            />
+          <Autocomplete
+            label="Società"
+            placeholder="Opzionale"
+            className="col-span-2"
+            limit={5}
+            key={form.key('club')}
+            {...form.getInputProps('club')}
+            data={clubs}
+          />
 
-            <TextInput
-              withAsterisk
-              label="Email"
-              placeholder=""
-              className="col-span-2"
-              key={form.key('email')}
-              {...form.getInputProps('email')}
-            />
+          <TextInput
+            withAsterisk
+            label="Email"
+            placeholder=""
+            className="col-span-2"
+            key={form.key('email')}
+            {...form.getInputProps('email')}
+          />
 
-            <TextInput
-              label="Telefono"
-              placeholder="Opzionale"
-              className="col-span-2"
-              key={form.key('phone_number')}
-              {...form.getInputProps('phone_number')}
-            />
+          <TextInput
+            label="Telefono"
+            placeholder="Opzionale"
+            className="col-span-2"
+            key={form.key('phone_number')}
+            {...form.getInputProps('phone_number')}
+          />
 
-          </div>
-        
-          <p className="mt-6">
-            <span className="block text-xs text-gray-600 dark:text-gray-500">
-              Completando l&apos;iscrizione accetti i <a href="/legal/terms" target="_blank" className="link" rel="noopener noreferrer">Termini e condizioni</a> e l&apos;<a href="/legal/privacy-policy" target="_blank" className="link" rel="noopener noreferrer">informativa sulla privacy</a>
-            </span>
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
-            <Button onClick={onSave} variant="outline" classNames={{label: 'light'}}>Iscrivi altro partecipante</Button>
-            <Button onClick={onSubmit} variant="filled" classNames={{label: 'light'}}>Vai al pagamento</Button>
-          </div>
-
-        </form>
+        </div>
       
-        <Modal opened={isTinModalOpened} onClose={closeTinModal} title="Calcolo codice fiscale" withCloseButton={false} size={modalSize}>
-          <EventEntryTinForm form={form} onClose={closeTinModal} />
-        </Modal>
-      </MantineProvider>
+        <p className="mt-6">
+          <span className="block text-xs text-gray-600 dark:text-gray-500">
+            Completando l&apos;iscrizione accetti i <a href="/legal/terms" target="_blank" className="link" rel="noopener noreferrer">Termini e condizioni</a> e l&apos;<a href="/legal/privacy-policy" target="_blank" className="link" rel="noopener noreferrer">informativa sulla privacy</a>
+          </span>
+        </p>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+          <Button onClick={onSave} variant="outline">Iscrivi altro partecipante</Button>
+          <Button onClick={onSubmit} variant="filled">Vai al pagamento</Button>
+        </div>
+
+      </form>
+    
+      <Modal opened={isTinModalOpened} onClose={closeTinModal} title="Calcolo codice fiscale" withCloseButton={false} size={modalSize}>
+        <EventEntryTinForm form={form} onClose={closeTinModal} />
+      </Modal>
     </>
   )
 }

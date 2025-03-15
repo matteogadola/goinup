@@ -12,10 +12,9 @@ export default async function Home() {
 
   return (
     <>
-
     <div className="grid grid-cols-1 lg:grid-cols-2">
 
-      <div className="flex lg:hidden items-start pb-16">
+      <div className="flex lg:hidden items-start pb-8">
         <div className="shadow-lg">
           <FadeUpAnimation>
             <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-60" />
@@ -23,7 +22,7 @@ export default async function Home() {
         </div>
       </div>
 
-      <div>
+      <div className="lg:mt-8">
         <div className="flex flex-col pl-4 space-y-2 lg:mt-20">
           <h3 className="text-lg text-gray-600">10 gare vertical di montagna</h3>
           <h1 className="mt-2 text-3xl">Circuito a finalità <span className="px-1 bg-yellow-200">benefica</span></h1>
@@ -31,13 +30,13 @@ export default async function Home() {
           </div>
       </div>
 
-      <div className="hidden lg:flex lg:flex-col items-start">
-        <div className="shadow-lg ">
+      <div className="hidden lg:flex lg:flex-col items-center mt-16">
+        <div className="relative -left-10 shadow-lg hover:scale-105">
           <FadeUpAnimation>
             <img src="/images/homepage/lino.jpg" alt="Header image" className="grayscale-50" width={400} />
           </FadeUpAnimation>
         </div>
-        <div className="relative z-10 left-10 -top-7 shadow-lg">
+        <div className="relative z-10 left-10 -top-7 shadow-lg hover:scale-105">
           <FadeUpAnimation>
             <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-50" width={500} />
           </FadeUpAnimation>
@@ -80,7 +79,7 @@ export default async function Home() {
     
     {!!serie?.flyer &&
       <div className="flex mt-32 justify-center items-center">
-        <img src={urlFor(serie.flyer).url()} alt="goinup flyer" className="" width={700} />
+        <img src={urlFor(serie.flyer)} alt="goinup flyer" className="" width={700} />
       </div>
     }
 

@@ -1,24 +1,19 @@
 'use client'
 
-import { useMemo } from 'react'
-import { useFormStatus } from 'react-dom'
+import { useUiStore } from '@/store/ui'
 
 export default function GoogleLoginButton({ formAction }: { formAction: any }) {
-  const { pending, action } = useFormStatus()
-  const isLoading = useMemo(() => pending && (action as any)?.name === formAction?.name, [pending, action])
+  const { loginLoading, loginProvider, setLoginProvider } = useUiStore()
+
+  const handleClick = () => {
+    setLoginProvider('google')
+    formAction()
+  }
 
   return (
-    <button formAction={formAction} className="flex items-center h-12 bg-white hover:cursor-pointer shadow-xs hover:shadow-lg text-black px-3 rounded" disabled={pending}>
-      <img src={isLoading ? "images/logo/google-loading.webp" : "images/logo/google.png"} alt="Google login" width="36" height="36" />
-      <span className={`ml-4 ${isLoading ? 'opacity-40' : ''}`}>Accedi con Google</span>
+    <button onClick={handleClick} className="flex items-center h-12 bg-white hover:cursor-pointer shadow-xs hover:shadow-lg hover:scale-105 text-black px-3 rounded w-62 m-auto disabled:opacity-80" disabled={loginLoading}>
+      <img src={loginProvider === 'google' ? "images/logo/google-loading.webp" : "images/logo/google.png"} alt="Google login" width="36" height="36" />
+      <span className="ml-4">Accedi con Google</span>
     </button>
   )
-  /*
-  return (
-    <button formAction={loginWithGoogle} className="flex items-center h-12 bg-white hover:cursor-pointer shadow-xs hover:shadow-lg text-black px-3 rounded" disabled={pending}>
-      <img src={isLoading ? "images/logo/google-loading.webp" : "images/logo/google.png"} alt="Google login" width="36" height="36" />
-      <span className={`ml-4 ${isLoading ? 'opacity-40' : ''}`}>Accedi con Google</span>
-    </button>
-  )
-  */
 }

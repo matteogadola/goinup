@@ -17,6 +17,8 @@ import { Button, MantineProvider, PasswordInput, TextInput } from '@mantine/core
 import { useAuthStore } from '@store/auth'
 //import { loginWithGoogle, signIn } from '../login-actions'
 import ErrorText from '@components/ui/error-text'
+import { useForm } from '@mantine/form'
+import { useUiStore } from '@/store/ui'
 
 interface Credentials {
   email: string
@@ -32,75 +34,61 @@ interface Props {
 }
 
 export default function EmailLoginForm({ formAction }: Partial<Props>) {
-  //const { isLoading, loadingProvider, error, setLoading, setError } = useAuthStore()
-  const { pending, action } = useFormStatus()
-  const isLoading = useMemo(() => pending && (action as any)?.name === 'loginWithPassword', [pending, action])
-  /*const handleSubmit = async (event: any) => {
-    setLoading('email')
+  const { loginLoading, loginProvider, setLoginProvider } = useUiStore()
+  const [ error, setError ] = useState<string | null>(null)
 
-    event.preventDefault();
-    const data = new FormData(event.target);
+  const form = useForm({
+    mode: 'uncontrolled',
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validate: {
+      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+      password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
+    },
+  });
+
+  const onSubmit = async (data: any) => {
+    setError(null)
+    setLoginProvider('email')
 
     try {
-      await signIn({
-        email: data.get('email') as string,
-        password: data.get('password') as string
-      })
+      await formAction(data)
     } catch(e: any) {
-      setError(e)
+      setError(e.message)
+      return
     } finally {
-      setLoading()
+      setLoginProvider(null)
     }
-  }*/
+  }
 
   return (
     <div className="flex flex-col space-y-2" id="email-login">
-      <MantineProvider>
+
+      <form onSubmit={form.onSubmit(onSubmit)}>
+
         <TextInput
           withAsterisk={false}
           label="Email"
-          id="email"
-          name="email"
-          type="email"
+          key={form.key('email')}
+          {...form.getInputProps('email')}
           required
         />
         <PasswordInput
           withAsterisk={false}
           label="Password"
-          id="password"
-          name="password"
-          type="password"
+          key={form.key('password')}
+          {...form.getInputProps('password')}
           required
         />
-        {/*!!error && <ErrorText>{error.message}</ErrorText>*/}
-        <Button type="submit" className="mt-4" formAction={formAction} loading={isLoading} disabled={pending}>Accedi</Button>
-      </MantineProvider>
-    </div>
-  )
-/*
-  return (
-    <div className="flex flex-col space-y-2" id="email-login">
-      <form onSubmit={handleSubmit}>
-        <MantineProvider>
-          <TextInput
-            withAsterisk={false}
-            label="Email"
-            id="email"
-            name="email"
-            type="email"
-            required
-          />
-          <PasswordInput
-            withAsterisk={false}
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            required
-          />
-          <Button type="submit" loading={loadingProvider === 'email'} disabled={isLoading}>Accedi</Button>
-        </MantineProvider>
+
+        {!!error &&
+          <ErrorText className="mt-4">{error}</ErrorText>
+        }
+
+        <Button type="submit" className="mt-4" loading={loginProvider === 'email'} disabled={loginLoading} fullWidth>Accedi</Button>
       </form>
     </div>
-  )*/
+  )
 }

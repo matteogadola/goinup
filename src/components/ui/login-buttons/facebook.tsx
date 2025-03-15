@@ -11,18 +11,20 @@
 
 'use client'
 
-import { useMemo } from 'react'
-import { useFormStatus } from 'react-dom'
-import { useAuthStore } from '@store/auth'
+import { useUiStore } from '@/store/ui'
 
 export default function FacebookLoginButton({ formAction }: { formAction: any }) {
-  const { pending, action } = useFormStatus()
-  const isLoading = useMemo(() => pending && (action as any)?.name === formAction?.name, [pending, action])
+  const { loginLoading, loginProvider, setLoginProvider } = useUiStore()
+
+  const handleClick = () => {
+    setLoginProvider('facebook')
+    formAction()
+  }
 
   return (
-    <button formAction={formAction} className="flex items-center h-12 bg-white hover:cursor-pointer shadow-xs hover:shadow-lg text-black px-3 rounded" disabled={pending}>
-      <img src={isLoading ? "/images/logo/facebook-loading.webp" : "/images/logo/facebook.png"} alt="Facebook login" width="30" height="30" />
-      <span className={`ml-4 ${isLoading ? 'opacity-40' : ''}`}>Accedi con Facebook</span>
+    <button onClick={handleClick} className="flex items-center h-12 bg-white hover:cursor-pointer shadow-xs hover:shadow-lg hover:scale-105 text-black px-3 rounded w-62 m-auto disabled:opacity-80" disabled={loginLoading}>
+      <img src={loginProvider === 'facebook' ? "/images/logo/facebook-loading.webp" : "/images/logo/facebook.png"} alt="Facebook login" width="30" height="30" />
+      <span className="ml-4">Accedi con Facebook</span>
     </button>
   )
 }

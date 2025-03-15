@@ -18,7 +18,10 @@ export const getEvents = async ({ year }: { year?: number } = {}) => {
 
 export const getUpcomingEvents = async () => {
   const today = new Date().toISOString().split('T')[0]
-  return client.fetch(`*[_type == "event" && type == "race" && status != "internal" && date >= "${today}"] | order(date) [0...2]`)
+  return client.fetch(`*[_type == "event" && type == "race" && status != "internal" && date >= "${today}"]{
+    ...,
+    products[]->
+  } | order(date) [0...2]`)
 }
 
 export const getEvent = async (slug: string) => {

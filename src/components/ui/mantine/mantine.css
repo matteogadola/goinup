@@ -1,0 +1,12 @@
+.mantine-Button-inner {
+  font-weight: var(--font-weight-light);
+}
+
+.mantine-Divider-label {
+  color: var(--foreground);
+  --divider-color: var(--foreground);
+}
+
+.header {
+  border-bottom: 0;
+}

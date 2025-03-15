@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { jwtDecode } from 'jwt-decode'
+import { getClaims } from './helpers'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -36,13 +36,7 @@ export async function updateSession(request: NextRequest) {
 
   if (user && ['login', 'register'].includes(nextRoute)) {
     const url = request.nextUrl.clone()
-    try {
-      const { data: { session } } = await supabase.auth.getSession()
-      const jwt = jwtDecode<any>(session!.access_token)
-      url.pathname = jwt?.user_role ? '/console' : '/account'
-    } catch(e) {
-      url.pathname = '/account'
-    }
+    url.pathname = (await getClaims())?.user_role ? '/console' : '/account'
     return NextResponse.redirect(url)
   } else if (!user && ['account', 'console'].includes(nextRoute)) {
     const url = request.nextUrl.clone()

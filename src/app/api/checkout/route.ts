@@ -1,6 +1,5 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { Order, OrderItem } from '@d/orders'
 import { createClient } from '@utils/supabase/server';
