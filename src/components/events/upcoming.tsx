@@ -3,103 +3,55 @@ import { urlFor } from "@utils/sanity";
 import clsx from "clsx";
 import Link from "next/link";
 import EventEntryStatus from "./entry-status";
-
-/*
-mostra i prossimi eventi (3 - parametrizabile)
-
-metti tag con status iscrizioni (aperte, chiuse, soldout, ecc)
-*/
+import { CSSProperties } from "react";
 
 export default async function UpcomingEvents({ events }: { events: any[] }) {
 
-  /*return (
+  return (
     <>
-      <ul role="list" className={clsx("grid grid-cols-1 gap-12 justify-center items-center", {"lg:grid-cols-3": events.length === 3, "lg:grid-cols-2": events.length === 2})}>
-        {events.map((event, key) => (
-          <Link href={`/events/${event.slug.current}`} key={key} className="grid grid-rows-subgrid row-span-4 gap-0 lg:max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl border-2 border-title hover:opacity-90">
-            <div className="relative text-white text-center">
-                <div className="h-48">
-                  <img src={urlFor(event.summary_image).url()} className="w-full h-full object-cover object-top" alt="Image" />
-                  <div className="absolute inset-0 w-full h-full bg-slate-800 opacity-40"></div>
-                </div>
-                <span className={
-                  clsx("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-unbounded font-semibold uppercase", {
-                    "whitespace-nowrap": event.name.length <= 12
-                  })}
-                >
-                  {event.name}
-                </span>
+      <ul role="list" className={clsx("upcoming-grid", {
+        "grid-2": events.length === 2,
+        "grid-3": events.length === 3
+        })}>
+        {events.map((event, key) =>
+          <Link href={`/events/${event.slug.current}`} role="listitem" key={key} className="upcoming-card">
+            <div className="upcoming-header" style={getBackgroudStyle(event)}>
+              <div className="upcoming-header-text">
+                <h3 className={clsx("upcoming-header-title", { "nowrap": event.name.length <= 12})}>
+                {event.name}
+                </h3>
 
-                <div className="absolute bottom-2 font-semibold text-xs w-full px-2 flex flex-row justify-between">
-                  <span className="uppercase">{event.promoter_id !== 1 && event.promoter_id}</span>}
-                  <div className="space-x-2">
-                    {(event.details?.elevation_gain ?? 0) !== 0 && <span className=" bg-accent rounded-md py-0.5 px-1.5 bg-opacity-60">{event.details?.elevation_gain}D+</span>}
-                    {(event.details?.distance ?? 0) !== 0 && <span className="bg-button rounded-md py-0.5 px-1.5 bg-opacity-60">{event.details?.distance}km</span>}
-                  </div>
+                <div className="upcoming-header-badges">
+                  {(event.details?.elevation_gain ?? 0) !== 0 && <span className=" bg-blue-600 rounded-md py-0.5 px-1.5 bg-opacity-60">{event.details?.elevation_gain}D+</span>}
+                  {(event.details?.distance ?? 0) !== 0 && <span className="bg-button rounded-md py-0.5 px-1.5 bg-opacity-60">{event.details?.distance}km</span>}
                 </div>
-
               </div>
-            <div>
-              <span className="font-unbounded font-semibold text-accent text-xl uppercase">{dt(event.date).format('ddd DD MMM')}</span>
             </div>
-            <div>
-              <p className="text-gray-700 text-base mt-2">{event.summary}</p>
+
+            <div className="flex items-center px-2">
+              <span className="font-unbounded text-xl uppercase">{dt(event.date).format('ddd DD MMM')}</span>
             </div>
-            <div>
+            <div className="px-2">
+              <span className="text-gray-700 text-base">{event.summary}</span>
+            </div>
+            <div className="px-2 py-4">
               <EventEntryStatus event={event} />
             </div>
             
-                
+            
           </Link>
-        ))}
-      </ul>
-
-    </>
-  )*/
-
-  return (
-    <>
-      <ul role="list" className={clsx("grid grid-cols-1 gap-12 justify-center items-center", {"lg:grid-cols-3": events.length === 3, "lg:grid-cols-2": events.length === 2})}>
-        {events.map((event, key) =>
-          <Link href={`/events/${event.slug.current}`} key={key}>
-            <div className="lg:max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl border-2 border-title hover:opacity-90">
-              <div className="relative text-white text-center">
-                <div className="h-48">
-                  <img src={urlFor(event.summary_image).url()} className="w-full h-full object-cover object-top" alt="Image" />
-                  <div className="absolute inset-0 w-full h-full bg-slate-800 opacity-40"></div>
-                </div>
-                <span className={
-                  clsx("absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl font-unbounded font-semibold uppercase", {
-                    "whitespace-nowrap": event.name.length <= 12
-                  })}
-                >
-                  {event.name}
-                </span>
-
-                <div className="absolute bottom-2 font-semibold text-xs w-full px-2 flex flex-row justify-between">
-                  <span className="uppercase">{event.promoter_id !== 1 && event.promoter_id}</span> {/* va pigliato e stampato promoter_name */}
-                  <div className="space-x-2">
-                    {(event.details?.elevation_gain ?? 0) !== 0 && <span className=" bg-accent rounded-md py-0.5 px-1.5 bg-opacity-60">{event.details?.elevation_gain}D+</span>}
-                    {(event.details?.distance ?? 0) !== 0 && <span className="bg-button rounded-md py-0.5 px-1.5 bg-opacity-60">{event.details?.distance}km</span>}
-                  </div>
-                </div>
-
-              </div>
-              <div className="px-6 py-4 min-h-[12rem]">
-                <span className="font-unbounded font-semibold text-accent text-xl uppercase">{dt(event.date).format('ddd DD MMM')}</span>
-                <p className="text-gray-700 text-base mt-2">{event.summary}</p>
-                <div>
-                  {}
-                </div>
-                <p className="text-gray-700 text-base mt-2 hidden">
-                  <EventEntryStatus event={event} />
-                </p>
-              </div>
-
-            </div>
-          </Link>
+          
         )}
       </ul>
     </>
   )
+}
+function getBackgroudStyle(event: any): CSSProperties {
+  let url = '/images/default-summary.webp'
+
+  if (event.summary_image) {
+    url = urlFor(event.summary_image)?.url() ?? url
+  }
+
+  return { 'background-image': `url("${url}")` } as CSSProperties
 }
