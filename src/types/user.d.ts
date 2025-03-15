@@ -6,3 +6,9 @@ export interface User {
 }
 
 export type Role = 'owner' | 'admin' | 'manager' | 'contributor' | 'viewer'
+
+
+type Claims = {
+  user_role?: Role
+  groups?: number[]
+}

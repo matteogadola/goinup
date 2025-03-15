@@ -15,7 +15,7 @@ ISCRIZIONI: Disponibili alla partenza
 SE date è passato non mostro nulla
 */
 export default function EventEntryStatus({ event }: { event: any }) {
-
+  
   if (event.status === 'close') {
     return <>Iscrizioni chiuse</>
   } else if (event.status === 'open') {

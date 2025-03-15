@@ -26,12 +26,12 @@ export default async function Navbar({
   const { data: { user }, error } = await supabase.auth.getUser()
 
   return (
-    <div className="page flex justify-between items-center h-full">
+    <div className="page grid grid-cols-3 items-center h-full">
       <NavbarBurger />
 
       <div className="flex items-center justify-center w-40">
-        <Link href="/" className="hover:opacity-70">
-          <img src="/images/logo/goinup-header.webp" className="h-12 object-contain" alt="Logo" />
+        <Link href="/" className="hover:scale-105">
+          <img src="/images/logo/goinup-header.webp" className="h-11 object-contain" alt="Logo" />
         </Link>
       </div>
 
@@ -49,7 +49,7 @@ export default async function Navbar({
         </ul>
       </div>
 
-      <div className="flex items-center justify-end md:w-40">
+      <div className="flex items-center justify-end ">
         <NavbarCartButton />
         <NavbarUserButton user={user} />
       </div>

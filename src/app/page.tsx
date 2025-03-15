@@ -31,12 +31,12 @@ export default async function Home() {
       </div>
 
       <div className="hidden lg:flex lg:flex-col items-center mt-16">
-        <div className="relative -left-10 shadow-lg">
+        <div className="relative -left-10 shadow-lg hover:scale-105">
           <FadeUpAnimation>
             <img src="/images/homepage/lino.jpg" alt="Header image" className="grayscale-50" width={400} />
           </FadeUpAnimation>
         </div>
-        <div className="relative z-10 left-10 -top-7 shadow-lg">
+        <div className="relative z-10 left-10 -top-7 shadow-lg hover:scale-105">
           <FadeUpAnimation>
             <img src="/images/homepage/quattro.webp" alt="Header image" className="grayscale-50" width={500} />
           </FadeUpAnimation>

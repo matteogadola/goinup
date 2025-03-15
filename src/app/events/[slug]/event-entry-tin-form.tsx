@@ -93,7 +93,7 @@ export default function EventEntryTinForm({ form: outerForm, onClose }: { form: 
   return (
     <>
       <form autoComplete="off">
-        <div className="px-6">
+        <div className="">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             <TextInput
               withAsterisk

@@ -5,9 +5,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { CartIcon, UserIcon } from '@components/icons';
 import { useCartStore } from '@store/cart';
-import { Badge, Drawer, MantineProvider, Button, UnstyledButton } from '@mantine/core';
+import { Badge, Drawer, MantineProvider, Button, UnstyledButton, ActionIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import CartItems from '@components/cart/cart-items';
+import { ShoppingCart } from 'lucide-react';
 
 export default function NavbarCartButton() {
   const { items } = useCartStore();
@@ -23,10 +24,10 @@ export default function NavbarCartButton() {
   return (
     <>
     {!!(items.length && pathname !== '/checkout') &&
-    <MantineProvider>
-    <UnstyledButton className="hidden md:flex" onClick={open}>
-      <CartIcon className="hover:text-blue-600" />
-      <Badge size="xs" circle className="relative -left-2 -top-1">{items.length}</Badge>
+    <div>
+    <UnstyledButton className="flex items-center" onClick={open}>
+      <ShoppingCart size={28} color="#000000" absoluteStrokeWidth />
+      <Badge size="xs" circle className="relative -left-2 -top-2">{items.length}</Badge>
     </UnstyledButton>
 
     <Drawer opened={opened} position="right" onClose={close} title="Carrello">
@@ -45,9 +46,9 @@ export default function NavbarCartButton() {
           </div>
         }
       </div>
-      
+
     </Drawer>
-  </MantineProvider>
+    </div>
     }
     </>
   )

@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@utils/supabase/server'
 import { SignInWithPasswordCredentials } from '@supabase/supabase-js'
+import { getClaims } from '@/utils/supabase/helpers'
 
 export const handleSubmit = async (event: any) => {
   event.preventDefault();
@@ -14,7 +15,7 @@ export const handleSubmit = async (event: any) => {
 export async function loginWithPassword(credentials: { email: string, password: string }): Promise<void> {
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword(credentials)
+  const { data, error } = await supabase.auth.signInWithPassword(credentials)
 
   if (error) {
     switch (error.code) {
@@ -27,8 +28,10 @@ export async function loginWithPassword(credentials: { email: string, password: 
     }
   }
 
-  revalidatePath('/login', 'layout')
-  redirect('/login')
+  const url = (await getClaims(data.session))?.user_role ? '/console' : '/account'
+
+  revalidatePath(url, 'layout')
+  redirect(url)
 }
 
 export async function loginWithGoogle() {

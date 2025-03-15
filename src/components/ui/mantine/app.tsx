@@ -30,7 +30,7 @@ export default function AppContainer({
         navbar={{
           width: 300,
           breakpoint: 'sm',
-          collapsed: { mobile: !sidenavOpened, desktop: !sidenavOpened },
+          collapsed: { mobile: !sidenavOpened, desktop: true },
         }}
         padding="md"
         classNames={{
