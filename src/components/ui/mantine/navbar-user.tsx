@@ -42,7 +42,7 @@ export default function NavbarUserButton({ user, className }: { user: User | nul
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item component={Link} href="/login">
+        <Menu.Item component={Link} href="/account">
           <span className="text-lg font-semibold text-gray-700">{user.user_metadata.first_name}</span>
           <span className="block text-sm text-gray-500">{user.email}</span>
         </Menu.Item>
